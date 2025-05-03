@@ -8,17 +8,16 @@
     <script src="/js/main.js" defer></script>
   </head>
   <body>
-    <header class="header">
-      <div class="headerLeft">
-        <a href="/" id="homeBtn">Challex</a>
-        <a href="/login" id="LoginBtn">Login</a>
-        <a href="/signup" id="SignupBtn">Signup</a>
-      </div>
-      <div class="searchBarWrapper">
-        <a href="/write" id="writeBtn">작성하기</a>
-        <input type="text" id="search" placeholder="검색..." />
-      </div>
-    </header>
+    <div id="header"></div>
+    <!-- 헤더를 삽입할 위치 -->
+
+    <script>
+      fetch("/header.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("header").innerHTML = data;
+        });
+    </script>
     <section class="section">
       <div class="content">
         <h1 style="font-size: 36px">Welcome to Challex</h1>
