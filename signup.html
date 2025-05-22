@@ -1,120 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signup</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-        background-color: rgb(223, 223, 223);
-      }
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Challex - 회원가입</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #efefef;
+    }
 
+    #header {
+      background-color: black;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .SignupWrapper {
+      max-width: 420px;
+      margin: 10vh auto;
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .inputWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .IdWrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .IdWrapper input {
+      flex: 1;
+    }
+
+    button {
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .submitWrapper {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: royalblue;
+      color: white;
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    @media screen and (max-width: 500px) {
       .SignupWrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid rgba(255, 255, 255, 0.625);
-        border-radius: 25px;
-        padding: 20px 30px;
-        margin: 10vh auto;
-        width: 400px;
-        background-color: white;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin: 5vh 20px;
+        padding: 20px;
       }
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
 
-      .inputWrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-      }
-
-      label {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-
-      input {
-        width: 300px;
-        height: 30px;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 14px;
-      }
-
-      .IdWrapper {
-        display: flex;
-        gap: 10px;
-        align-items: end;
-      }
-
-      .IdWrapper input {
-        flex: 1;
-      }
-
-      button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 100px;
-        height: 35px;
-        background-color: rgba(47, 47, 47, 0.605);
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 14px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        transform: scale(1.05);
-        transition: 0.2s;
-      }
-
-      .submitWrapper {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="header"></div>
-
-    <script>
-      fetch("header.html") // 상대경로 사용 (같은 폴더에 있는 경우)
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("header").innerHTML = data;
-        });
-    </script>
-
-    <div class="SignupWrapper">
-      <h2>회원가입</h2>
-      <div class="inputWrapper">
-        <div style="display: flex; flex-direction: column; gap: 0px">
-          <label for="name">이름</label>
-          <input type="text" id="name" placeholder="이름" />
-        </div>
-        <div class="IdWrapper">
-          <div style="flex: 1">
-            <label for="userid">ID</label>
-            <input type="text" id="userid" placeholder="ID" />
-          </div>
-          <button id="checkIdBtn" style="margin-bottom: 5px;">중복검사</button>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 0px">
-          <label for="password">PW</label>
-          <input type="password" id="password" placeholder="Password" />
-        </div>
+  <div class="SignupWrapper">
+    <span class="badge">SIGNUP</span>
+    <h2>회원가입</h2>
+    <div class="inputWrapper">
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" placeholder="이름 입력" />
       </div>
-      <div class="submitWrapper">
-        <button id="signupBtn">Sign up</button>
+      <div class="IdWrapper">
+        <div style="flex: 1">
+          <label for="userid">아이디</label>
+          <input type="text" id="userid" placeholder="ID 입력" />
+        </div>
+        <button id="checkIdBtn">중복검사</button>
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" placeholder="Password 입력" />
       </div>
     </div>
-  </body>
+    <div class="submitWrapper">
+      <button id="signupBtn">가입하기</button>
+    </div>
+  </div>
+
+  <script>
+    // header 삽입
+    $(function () {
+      $("#header").load("header.html");
+    });
+
+    // 버튼 동작 예시
+    $("#checkIdBtn").on("click", function () {
+      const userid = $("#userid").val();
+      alert(userid ? `"${userid}"는 사용할 수 있습니다.` : "ID를 입력하세요.");
+    });
+
+    $("#signupBtn").on("click", function () {
+      const name = $("#name").val();
+      const userid = $("#userid").val();
+      const pw = $("#password").val();
+
+      if (name && userid && pw) {
+        alert("회원가입 완료!");
+      } else {
+        alert("모든 항목을 입력해주세요.");
+      }
+    });
+  </script>
+</body>
 </html>

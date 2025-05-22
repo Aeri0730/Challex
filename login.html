@@ -1,20 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Challex - 로그인</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    #header {
+      background-color: black;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .loginWrapper {
+      max-width: 400px;
+      margin: 10vh auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loginWrapper h2 {
+      margin-bottom: 30px;
+    }
+
+    .formField {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: crimson;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    @media (max-width: 500px) {
+      .loginWrapper {
+        margin: 5vh 20px;
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="header"></div>
-    <!-- 헤더를 삽입할 위치 -->
+  <div id="header"></div>
+  <div class="loginWrapper">
+    <span class="badge">LOGIN</span>
+    <h2>로그인</h2>
+    <div class="formField">
+      <label for="userid">아이디</label>
+      <input type="text" id="userid" placeholder="ID" />
+    </div>
+    <div class="formField">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="Password" />
+    </div>
+    <button id="loginBtn">로그인</button>
+  </div>
 
-    <script>
-      fetch("/header.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("header").innerHTML = data;
-        });
-    </script> 
+  <script>
+    // jQuery로 header 삽입
+    $(function () {
+      $("#header").load("header.html");
+    });
+
+    // 로그인 버튼 동작 예시
+    $("#loginBtn").on("click", function () {
+      const id = $("#userid").val();
+      const pw = $("#password").val();
+
+      if (id && pw) {
+        alert(`ID: ${id}\nPW: ${pw}`);
+      } else {
+        alert("아이디와 비밀번호를 입력해주세요.");
+      }
+    });
+  </script>
 </body>
 </html>

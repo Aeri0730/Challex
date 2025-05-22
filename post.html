@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 보기</title>
+</head>
+<body>
+  <div id="header"></div>
+  <main style="padding: 20px;">
+    <h2 id="postTitle">제목</h2>
+    <p id="postContent">내용</p>
+  </main>
+
+  <script>
+    fetch("/header.html")
+      .then((res) => res.text())
+      .then((data) => {
+        document.getElementById("header").innerHTML = data;
+      });
+
+    const params = new URLSearchParams(window.location.search);
+    const postId = parseInt(params.get("id"));
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const post = posts.find(p => p.id === postId);
+
+    if (post) {
+      document.getElementById("postTitle").textContent = post.title;
+      document.getElementById("postContent").textContent = post.content;
+    } else {
+      document.querySelector("main").innerHTML = "<p>글을 찾을 수 없습니다.</p>";
+    }
+  </script>
+</body>
+</html>
