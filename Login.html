@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      html,
+      body {
+        margin : 0;
+        padding : 0;
+        font-family : sans-serif;
+        background-color : rgb(223, 223, 223);
+      }
+
+      .Login {
+        width : 400px;
+        background-color : white;
+        border : 2px solid rgba(255, 255, 255, 0.625);
+        border-radius : 25px;
+        padding : 20px 30px;
+        margin : 100px auto;
+        box-shadow : 0 4px 10px rgba(0, 0, 0, 0.1);
+        display : flex;
+        flex-direction : column;
+        align-items : center;
+        justify-content : center;
+      }
+
+      .idpassword {
+        width : 100%;
+        display : flex;
+        flex-direction : column;
+        gap : 10px;
+      }
+
+      label {
+        font-weight : bold;
+        margin-bottom : 0;
+      }
+
+      input {
+        width : 90%;
+        height : 30px;
+        padding : 5px 10px;
+        border : 1px solid #ccc;
+        border-radius : 8px;
+        font-size : 14px;
+      }
+
+      button {
+        display : inline-flex;
+        align-items : center;
+        justify-content : center;
+        width : 100px;
+        height : 35px;
+        background-color : rgba(47, 47, 47, 0.605);
+        border : 2px solid rgba(255, 255, 255, 0.5);
+        border-radius : 20px;
+        color : rgba(255, 255, 255, 0.9);
+        font-size : 14px;
+        cursor : pointer;
+      }
+
+      button:hover {
+        transform : scale(1.1);
+        transition : 0.2s;
+      }
+
+      .button {
+        margin-top : 20px;
+      }
+
+      .link {
+        margin-top : 15px;
+        font-size : 14px;
+        text-align : center;
+      }
+
+      .link a {
+        color : blue;
+        text-decoration : none;
+        margin : 0 5px;
+      }
+
+      .link a:hover {
+        text-decoration : underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="Login">
+      <h2>로그인</h2>
+      <div class="idpassword">
+        <div>
+          <label for="userid">ID</label><br>
+          <input type="text" id="userid" placeholder="ID">
+        </div>
+        <div>
+          <label for="password">PW</label><br>
+          <input type="password" id="password" placeholder="Password">
+        </div>
+      </div>
+      <div class="button">
+        <button>Login</button>
+      </div>
+      <div class="link">
+        <a href="find_id.html">아이디 찾기</a> |
+        <a href="#">비밀번호 찾기</a> |
+        <a href="#">회원가입</a>
+      </div>
+    </div>
+  </body>
+</html>
