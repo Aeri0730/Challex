@@ -3,154 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Challex - 회원가입</title>
+  <title>회원가입</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #efefef;
     }
 
     #header {
       background-color: black;
       color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 18px;
     }
 
-    .SignupWrapper {
-      max-width: 420px;
+    .signup-container {
+      width: 400px;
       margin: 10vh auto;
       background-color: white;
-      border-radius: 20px;
-      padding: 30px;
+      border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      padding: 30px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
-    .inputWrapper {
+    .form-group {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      align-items: center;
+      margin-bottom: 18px;
     }
 
-    label {
+    .form-group label {
+      width: 80px;
       font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
       font-size: 14px;
     }
 
-    .IdWrapper {
+    /* ✅ 입력창 고정 너비 설정 */
+    .form-group input {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 210px; /* ← ID 입력창 기준으로 고정 */
+    }
+
+    /* ✅ ID + 중복검사 버튼 라인 정렬 */
+    .form-group.id-group {
       display: flex;
-      gap: 10px;
+      align-items: center;
     }
 
-    .IdWrapper input {
-      flex: 1;
+    .form-group.id-group input {
+      margin-right: 10px;
     }
 
-    button {
+    .form-group.id-group button {
+      padding: 8px 14px;
+      font-size: 13px;
       background-color: #333;
       color: white;
       border: none;
-      border-radius: 25px;
-      padding: 10px 20px;
-      font-size: 15px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      white-space: nowrap;
     }
 
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .submitWrapper {
-      margin-top: 25px;
+    .submit-button-wrapper {
       text-align: center;
+      margin-top: 20px;
     }
 
-    .badge {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background-color: royalblue;
+    .submit-button {
+      padding: 8px 24px;
+      font-size: 14px;
+      background-color: #333;
       color: white;
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    @media screen and (max-width: 500px) {
-      .SignupWrapper {
-        margin: 5vh 20px;
-        padding: 20px;
-      }
+    .submit-button:hover {
+      background-color: #222;
     }
   </style>
 </head>
 <body>
   <div id="header"></div>
 
-  <div class="SignupWrapper">
-    <span class="badge">SIGNUP</span>
+  <div class="signup-container">
     <h2>회원가입</h2>
-    <div class="inputWrapper">
-      <div>
-        <label for="name">이름</label>
-        <input type="text" id="name" placeholder="이름 입력" />
-      </div>
-      <div class="IdWrapper">
-        <div style="flex: 1">
-          <label for="userid">아이디</label>
-          <input type="text" id="userid" placeholder="ID 입력" />
-        </div>
-        <button id="checkIdBtn">중복검사</button>
-      </div>
-      <div>
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" placeholder="Password 입력" />
-      </div>
+
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input type="text" id="name" placeholder="이름 입력" />
     </div>
-    <div class="submitWrapper">
-      <button id="signupBtn">가입하기</button>
+
+    <div class="form-group id-group">
+      <label for="userid">아이디</label>
+      <input type="text" id="userid" placeholder="ID 입력" />
+      <button type="button">중복검사</button>
+    </div>
+
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="Password 입력" />
+    </div>
+
+    <div class="submit-button-wrapper">
+      <button class="submit-button">가입하기</button>
     </div>
   </div>
 
   <script>
-    // header 삽입
+    // 공통 헤더 삽입
     $(function () {
-      $("#header").load("header.html");
-    });
-
-    // 버튼 동작 예시
-    $("#checkIdBtn").on("click", function () {
-      const userid = $("#userid").val();
-      alert(userid ? `"${userid}"는 사용할 수 있습니다.` : "ID를 입력하세요.");
-    });
-
-    $("#signupBtn").on("click", function () {
-      const name = $("#name").val();
-      const userid = $("#userid").val();
-      const pw = $("#password").val();
-
-      if (name && userid && pw) {
-        alert("회원가입 완료!");
-      } else {
-        alert("모든 항목을 입력해주세요.");
-      }
+      $('#header').load('/header.html');
     });
   </script>
 </body>

@@ -10,91 +10,120 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: url('/images/background.jpg') no-repeat center center/cover;
+      background-color: #f8f8f8;
     }
 
     #header {
       background-color: black;
       color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 18px;
     }
 
-    .section {
-      min-height: 100vh;
+    /* Hero 영역 */
+    .hero {
+      background: url("./images/main/mainImg.jpg") no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+      height: 300px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 20px;
+    }
+
+    /* 본문 레이아웃 */
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 50px auto;
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .left-content {
+      flex: 2;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      gap: 20px;
     }
 
-    .content {
-      text-align: center;
-      color: black;
-    }
-
-    #startBtn {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 16px;
-      background-color: black;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    #startBtn:hover {
-      transform: scale(1.05);
-    }
-
-    .contentBack {
-      display: none; /* 처음에는 숨김 */
-      margin-top: 50px;
+    .post-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-    }
-
-    .part {
-      width: 220px;
+      align-items: center;
       padding: 15px;
-      border-radius: 10px;
-      background-color: white;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      gap: 20px;
       cursor: pointer;
+      transition: 0.2s ease;
     }
 
-    .part:hover {
-      transform: translateY(-5px);
-      transition: 0.2s;
+    .post-card:hover {
+      transform: translateY(-3px);
     }
 
-    .part img {
-      width: 80px;
-      height: 80px;
+    .post-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
     }
 
-    .badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: crimson;
-      color: white;
-      font-size: 11px;
-      padding: 3px 6px;
+    .post-card-content {
+      flex: 1;
+    }
+
+    .post-card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .post-card-desc {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .right-sidebar {
+      flex: 1;
+      background: white;
+      padding: 20px;
       border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      text-align: center;
     }
 
-    @media screen and (max-width: 600px) {
-      .contentBack {
+    .right-sidebar h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .right-sidebar p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media screen and (max-width: 768px) {
+      .main-container {
         flex-direction: column;
-        align-items: center;
+      }
+
+      .post-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .post-card img {
+        width: 80%;
+        height: auto;
       }
     }
   </style>
@@ -102,48 +131,44 @@
 <body>
   <div id="header"></div>
 
-  <section class="section">
-    <div class="content">
-      <h1 style="font-size: 36px">Welcome to Challex</h1>
-      <p style="font-size: 20px">당신의 한계에 도전하세요</p>
-      <button id="startBtn" onclick="displayOnScreen()">시작하기</button>
+  <!-- Hero 영역 -->
+  <section class="hero">
+    <h1>Welcome to Challex</h1>
+    <p>당신의 한계에 도전하세요</p>
+  </section>
+
+  <!-- 본문 콘텐츠 -->
+  <div class="main-container">
+    <!-- 왼쪽 카테고리 카드 -->
+    <div class="left-content">
+      <div class="post-card" onclick="location.href='topic.html'">
+        <img src="/images/main/category.png" alt="What Toppic">
+        <div class="post-card-content">
+          <div class="post-card-title">What Toppic</div>
+          <div class="post-card-desc">모든 게시물을 확인하세요.</div>
+        </div>
+      </div>
+
+      <div class="post-card" onclick="location.href='realized.html'">
+        <img src="/images/main/realized.png" alt="Realized">
+        <div class="post-card-content">
+          <div class="post-card-title">Realized</div>
+          <div class="post-card-desc">완료한 도전들을 한눈에!</div>
+        </div>
+      </div>
     </div>
 
-    <div class="contentBack" style="display: none;">
-      <div class="part">
-        <span class="badge">NEW</span>
-        <img src="/images/main/good.png" alt="Part 1" />
-        <div>
-          <h2>Hot Goal</h2>
-          <p>인기있는 게시물</p>
-        </div>
-      </div>
-      <div class="part" onclick="window.location.href='topic.html'">
-        <img src="/images/main/category.png" alt="Part 2" />
-        <div>
-          <h2>What Toppic</h2>
-          <p>모든 게시물</p>
-        </div>
-      </div>
-      <div class="part">
-        <img src="/images/main/realized.png" alt="Part 3" />
-        <div>
-          <h2>Realized</h2>
-          <p>완료한 도전</p>
-        </div>
-      </div>
+    <!-- 오른쪽 소개 박스 -->
+    <div class="right-sidebar">
+      <h3>Hot Goal</h3>
+      <p>인기 도전 영역입니다.<br>아직 구현되지 않았습니다.</p>
     </div>
-  </section>
+  </div>
 
   <script>
     $(function () {
-      $('#header').load('/header.html');
+      $("#header").load("/header.html");
     });
-
-    function displayOnScreen() {
-      document.querySelector(".contentBack").style.display = "flex";
-      document.getElementById("startBtn").style.display = "none"; // 버튼 숨기기 추가!
-    }
   </script>
 </body>
 </html>
