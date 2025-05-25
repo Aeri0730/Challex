@@ -27,6 +27,7 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
 
+<<<<<<< Updated upstream
       .inputWrapper {
         display: flex;
         flex-direction: column;
@@ -110,11 +111,58 @@
         <div style="display: flex; flex-direction: column; gap: 0px">
           <label for="password">PW</label>
           <input type="password" id="password" placeholder="Password" />
+=======
+  <div class="SignupWrapper">
+    <span class="badge">SIGNUP</span>
+    <h2>회원가입</h2>
+    <div class="inputWrapper">
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" placeholder="이름 입력" />
+      </div>
+      <div class="IdWrapper">
+        <div style="flex: 1">
+          <label for="userid">이메일</label>
+          <input type="text" id="userid" placeholder="이메일 입력" />
+>>>>>>> Stashed changes
         </div>
       </div>
       <div class="submitWrapper">
         <button id="signupBtn">Sign up</button>
       </div>
     </div>
+<<<<<<< Updated upstream
   </body>
+=======
+    <div class="submitWrapper">
+      <button id="signupBtn">가입하기</button>
+    </div>
+  </div>
+
+  <script>
+    // header 삽입
+    $(function () {
+      $("#header").load("header.html");
+    });
+
+    // 버튼 동작 예시
+    $("#checkIdBtn").on("click", function () {
+      const userid = $("#userid").val();
+      alert(userid ? `"${userid}"는 사용할 수 있습니다.` : "이메일을 입력하세요.");
+    });
+
+    $("#signupBtn").on("click", function () {
+      const name = $("#name").val();
+      const userid = $("#userid").val();
+      const pw = $("#password").val();
+
+      if (name && userid && pw) {
+        alert("회원가입 완료!");
+      } else {
+        alert("모든 항목을 입력해주세요.");
+      }
+    });
+  </script>
+</body>
+>>>>>>> Stashed changes
 </html>
