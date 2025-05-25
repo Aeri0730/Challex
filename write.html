@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>도전 목표 작성</title>
+  <style>
+    body {
+      background-color: #d0d0d0;
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    #header {
+      background-color: black;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 80px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .submitWrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    @media (max-width: 700px) {
+      main {
+        margin: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">Challex - 도전 작성</div>
+
+  <main>
+    <h2>도전 목표 작성</h2>
+    <form id="writeForm">
+      <label for="title">제목</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="content">내용</label>
+      <textarea id="content" name="content" rows="6" required></textarea>
+
+      <div class="file-row">
+        <label for="image">이미지 첨부</label>
+        <input type="file" id="image" name="image" />
+      </div>
+
+      <div class="submitWrapper">
+        <button type="submit">등록</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const imageInput = document.getElementById("image");
+    let base64Image = "";
+
+    imageInput.addEventListener("change", function () {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          base64Image = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("writeForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+
+      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+
+      const newPost = {
+        id: Date.now(),
+        title,
+        content,
+        image: base64Image
+      };
+
+      posts.push(newPost);
+      localStorage.setItem("posts", JSON.stringify(posts));
+
+      alert("글이 저장되었습니다!");
+      window.location.href = "topic.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Toppic - 게시물 목록</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body {
+      background-color: #f8f8f8;
+      font-family: sans-serif;
+      margin: 0;
+    }
+    #header {
+      background-color: black;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .post-item {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .post-item:hover {
+      background-color: #f0f0f0;
+    }
+    @media (max-width: 700px) {
+      main {
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">챌렉스 - 모든 게시물</div>
+
+  <main>
+    <h2>🗂 What Toppic</h2>
+    <div id="postList"></div>
+  </main>
+
+  <script>
+    const postList = document.getElementById("postList");
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+
+    if (posts.length === 0) {
+      postList.innerHTML = "<p>아직 게시물이 없습니다.</p>";
+    } else {
+      posts.reverse().forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post-item";
+        div.innerHTML = `<strong>${post.title}</strong>`;
+        div.onclick = () => {
+          window.location.href = `post.html?id=${post.id}`;
+        };
+        postList.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

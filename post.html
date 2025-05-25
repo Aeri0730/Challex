@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시물 보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    #header {
+      background-color: black;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .post-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .post-meta {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .post-content {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 20px;
+        padding: 20px;
+      }
+      .post-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main>
+    <div class="post-title" id="postTitle">제목</div>
+    <div class="post-meta" id="postDate">작성일: -</div>
+    <img id="postImage" class="post-image" src="" alt="첨부 이미지" style="display: none;" />
+    <div class="post-content" id="postContent">내용</div>
+  </main>
+
+  <script>
+    // 헤더 불러오기
+    $("#header").load("/header.html");
+
+    // 게시물 데이터 불러오기
+    const params = new URLSearchParams(window.location.search);
+    const postId = parseInt(params.get("id"));
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const post = posts.find(p => p.id === postId);
+
+    if (post) {
+      document.getElementById("postTitle").textContent = post.title;
+      document.getElementById("postContent").textContent = post.content;
+      document.getElementById("postDate").textContent = `작성일: ${new Date(post.id).toLocaleDateString("ko-KR")}`;
+
+      if (post.image) {
+        const image = document.getElementById("postImage");
+        image.src = post.image;
+        image.style.display = "block";
+      }
+    } else {
+      document.querySelector("main").innerHTML = "<p>글을 찾을 수 없습니다.</p>";
+    }
+  </script>
+</body>
+</html>
