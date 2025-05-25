@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+    <script src="/js/main.js" defer></script>
+  </head>
+  <body>
+    <div id="header"></div>
+    <!-- 헤더를 삽입할 위치 -->
+
+    <script>
+      fetch("/header.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("header").innerHTML = data;
+        });
+    </script>
+    <section class="section">
+      <div class="content">
+        <h1 style="font-size: 36px">Welcome to Challex</h1>
+        <p style="font-size: 20px">당신의 한계에 도전하세요</p>
+        <button id="startBtn" onclick="displayOnScreen()">시작하기</button>
+      </div>
+      <div class="contentBack" style="display: none">
+        <div class="partWrapper">
+          <div class="part">
+            <img src="/images/main/good.png" alt="Part 1" />
+            <div>
+              <h2>Hot Goal</h2>
+              <p>인기있는 게시물</p>
+            </div>
+          </div>
+          <div class="part">
+            <img src="/images/main/category.png" alt="Part 2" />
+            <div>
+              <h2>What Toppic</h2>
+              <p>모든 게시물</p>
+            </div>
+          </div>
+          <div class="part">
+            <img src="/images/main/realized.png" alt="Part 3" />
+            <div>
+              <h2>Realized</h2>
+              <p>완료한 도전</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
