@@ -54,14 +54,42 @@
       white-space: pre-wrap;
     }
 
-    @media (max-width: 600px) {
-      main {
-        margin: 20px;
-        padding: 20px;
-      }
-      .post-title {
-        font-size: 20px;
-      }
+    .comment-box {
+      margin-top: 40px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .button-wrap {
+      text-align: right;
+      margin-top: 10px;
+    }
+    button {
+      padding: 6px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: white;
+    }
+    .action-buttons button {
+      background: #eee;
+      color: #333;
+    }
+    .comment {
+      margin-top: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+    .reply {
+      margin-left: 20px;
+      font-size: 14px;
     }
   </style>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -73,6 +101,16 @@
     <div class="post-meta" id="postDate">작성일: -</div>
     <img id="postImage" class="post-image" src="" alt="첨부 이미지" style="display: none;" />
     <div class="post-content" id="postContent">내용</div>
+
+    <!-- 댓글 영역 -->
+    <div class="comment-box">
+      <h3>댓글</h3>
+      <input id="commentInput" placeholder="댓글을 입력하세요">
+      <div class="button-wrap">
+        <button onclick="addComment()">댓글 게시</button>
+      </div>
+      <div class="comments" id="commentList"></div>
+    </div>
   </main>
 
   <script>
@@ -97,6 +135,77 @@
       }
     } else {
       document.querySelector("main").innerHTML = "<p>글을 찾을 수 없습니다.</p>";
+    }
+
+    // 댓글 기능 구현
+    function addComment(parent = null) {
+      let input;
+      if (parent) {
+        input = parent.querySelector('.reply-input');
+      } else {
+        input = document.getElementById("commentInput");
+      }
+
+      const commentText = input.value.trim();
+      if (commentText === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
+
+      const commentDiv = document.createElement("div");
+      commentDiv.className = parent ? "comment reply" : "comment";
+
+      commentDiv.innerHTML = `
+        <p class="comment-text">💬 ${commentText}</p>
+        <div class="action-buttons">
+          <button>👍 좋아요</button>
+          <button>👎 싫어요</button>
+          <button onclick="editComment(this)">✏ 수정</button>
+          <button onclick="deleteComment(this)">🗑 삭제</button>
+          <button onclick="replyToComment(this)">↪ 대댓글</button>
+        </div>
+        <div class="replies"></div>
+      `;
+
+      const commentList = parent ? parent.querySelector('.replies') : document.getElementById("commentList");
+      commentList.appendChild(commentDiv);
+      input.value = "";
+
+      if (parent) {
+        const replyBox = parent.querySelector('.reply-box');
+        if (replyBox) replyBox.remove();
+      }
+    }
+
+    function editComment(button) {
+      const comment = button.closest('.comment');
+      const commentText = comment.querySelector('.comment-text');
+      const newText = prompt("댓글을 수정하세요:", commentText.textContent.replace("💬 ", ""));
+      if (newText) {
+        commentText.textContent = "💬 " + newText;
+      }
+    }
+
+    function deleteComment(button) {
+      const comment = button.closest('.comment');
+      if (confirm("댓글을 삭제할까요?")) {
+        comment.remove();
+      }
+    }
+
+    function replyToComment(button) {
+      const parentComment = button.closest('.comment');
+      if (parentComment.querySelector('.reply-box')) return;
+
+      const replyBox = document.createElement('div');
+      replyBox.className = 'reply-box';
+      replyBox.innerHTML = `
+        <input class="reply-input" placeholder="답글을 입력하세요">
+        <div class="button-wrap">
+          <button onclick="addComment(this.parentElement.parentElement.parentElement)">대댓글 게시</button>
+        </div>
+      `;
+      parentComment.appendChild(replyBox);
     }
   </script>
 </body>
