@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Toppic - 게시물 목록</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body {
+      background-color: #f8f8f8;
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-item {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .post-title {
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .post-title:hover {
+      text-decoration: underline;
+    }
+
+    .success-btn {
+      float: right;
+      padding: 5px 10px;
+      font-size: 12px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .success-btn:hover {
+      background-color: darkgreen;
+    }
+
+    @media (max-width: 700px) {
+      main {
+        margin: 20px;
+      }
+
+      .success-btn {
+        float: none;
+        display: block;
+        margin-top: 8px;
+      }
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      $("#header").load("header.html");
+    });
+  </script>
+
+  <main>
+    <h2>🗂 What Toppic</h2>
+    <div id="postList"></div>
+  </main>
+
+  <script>
+    // 초기 게시글이 없으면 샘플 데이터 생성 (최초 1회만 실행됨)
+    if (!localStorage.getItem("posts")) {
+      const defaultPosts = [
+        { id: 1, title: "10분 명상", desc: "마음을 가다듬자", status: "active" },
+        { id: 2, title: "물 2L 마시기", desc: "건강을 위해", status: "active" }
+      ];
+      localStorage.setItem("posts", JSON.stringify(defaultPosts));
+    }
+
+    const postList = document.getElementById("postList");
+
+    function loadPosts() {
+      return JSON.parse(localStorage.getItem("posts") || "[]");
+    }
+
+    function savePosts(posts) {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
+
+    function markSuccess(id) {
+      const posts = loadPosts();
+      const updatedPosts = posts.map(post => {
+        if (post.id === id) post.status = "success";
+        return post;
+      });
+      savePosts(updatedPosts);
+      renderPosts();
+    }
+
+    function renderPosts() {
+      const posts = loadPosts().filter(post => post.status === "active");
+      postList.innerHTML = "";
+
+      if (posts.length === 0) {
+        postList.innerHTML = "<p>아직 게시물이 없습니다.</p>";
+        return;
+      }
+
+      posts.reverse().forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post-item";
+
+        const title = document.createElement("span");
+        title.className = "post-title";
+        title.textContent = post.title;
+        title.onclick = () => {
+          window.location.href = `post.html?id=${post.id}`;
+        };
+
+        const btn = document.createElement("button");
+        btn.className = "success-btn";
+        btn.textContent = "Success";
+        btn.onclick = () => markSuccess(post.id);
+
+        div.appendChild(title);
+        div.appendChild(btn);
+        postList.appendChild(div);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", renderPosts);
+  </script>
+</body>
+</html>

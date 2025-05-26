@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Challex - 로그인</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    #header {
+      background-color: black;
+      color: white;
+    }
+
+    .login-container {
+      width: 400px;
+      margin: 10vh auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      width: 80px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 210px;
+    }
+
+    .submit-button-wrapper {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .submit-button {
+      padding: 8px 24px;
+      font-size: 14px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #222;
+    }
+
+    @media (max-width: 500px) {
+      .login-container {
+        margin: 5vh 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <div class="login-container">
+    <h2>로그인</h2>
+
+    <div class="form-group">
+      <label for="userid">아이디</label>
+      <input type="text" id="userid" placeholder="ID" />
+    </div>
+
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="Password" />
+    </div>
+
+    <div class="submit-button-wrapper">
+      <button class="submit-button" id="loginBtn">로그인</button>
+    </div>
+  </div>
+
+  <script>
+    $(function () {
+      $("#header").load("header.html");
+    });
+
+    $("#loginBtn").on("click", function () {
+      const id = $("#userid").val();
+      const pw = $("#password").val();
+
+      if (id && pw) {
+        alert(`ID: ${id}\nPW: ${pw}`);
+      } else {
+        alert("아이디와 비밀번호를 입력해주세요.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .post-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .post-meta {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    #likeSection {
+      margin-bottom: 25px;
+    }
+
+    #likeBtn {
+      padding: 6px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3b82f6;
+      color: white;
+      cursor: pointer;
+    }
+
+    #likeCount {
+      margin-left: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .post-image, .post-audio, .post-video {
+      display: block;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .post-image {
+      max-height: 400px;
+      object-fit: cover;
+    }
+
+    .post-content {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-wrap;
+    }
+
+    .comment-box {
+      margin-top: 40px;
+      border-top: 1px solid #ccc;
+      padding-top: 30px;
+    }
+
+    .comment-box input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .button-wrap {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .button-wrap button,
+    .action-buttons button {
+      padding: 6px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .action-buttons button {
+      background: #eee;
+      color: #333;
+    }
+
+    .comment {
+      margin-top: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+
+    .reply {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .reply-box {
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main>
+    <div class="post-title" id="postTitle">제목</div>
+    <div class="post-meta" id="postDate">작성일: -</div>
+    <div id="likeSection">
+      <button id="likeBtn">👍 좋아요</button>
+      <span id="likeCount"></span>
+    </div>
+    <img id="postImage" class="post-image" src="" alt="이미지" style="display:none;" />
+    <audio id="postAudio" class="post-audio" controls style="display:none;"></audio>
+    <video id="postVideo" class="post-video" controls style="display:none;"></video>
+    <div class="post-content" id="postContent">내용</div>
+
+    <div class="comment-box">
+      <input id="commentInput" placeholder="댓글을 입력하세요">
+      <div class="button-wrap">
+        <button onclick="addComment()">댓글 게시</button>
+      </div>
+      <div class="comments" id="commentList"></div>
+    </div>
+  </main>
+
+  <script>
+    $("#header").load("header.html");
+
+    const params = new URLSearchParams(window.location.search);
+    const postId = parseInt(params.get("id"));
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const post = posts.find(p => p.id === postId);
+
+    if (post) {
+      document.getElementById("postTitle").textContent = post.title;
+      document.getElementById("postContent").textContent = post.content || post.desc;
+      document.getElementById("postDate").textContent = `작성일: ${new Date(post.id).toLocaleDateString("ko-KR")}`;
+      document.getElementById("likeCount").textContent = `좋아요 ${post.likes || 0}개`;
+
+      document.getElementById("likeBtn").addEventListener("click", function () {
+        post.likes = (post.likes || 0) + 1;
+        const postIndex = posts.findIndex(p => p.id === postId);
+        if (postIndex !== -1) {
+          posts[postIndex].likes = post.likes;
+          localStorage.setItem("posts", JSON.stringify(posts));
+          document.getElementById("likeCount").textContent = `좋아요 ${post.likes}개`;
+        }
+      });
+
+      if (post.image) {
+        const image = document.getElementById("postImage");
+        image.src = post.image;
+        image.style.display = "block";
+      }
+
+      if (post.audio) {
+        const audio = document.getElementById("postAudio");
+        audio.src = post.audio;
+        audio.style.display = "block";
+      }
+
+      if (post.video) {
+        const video = document.getElementById("postVideo");
+        video.src = post.video;
+        video.style.display = "block";
+      }
+
+    } else {
+      document.querySelector("main").innerHTML = "<p>글을 찾을 수 없습니다.</p>";
+    }
+
+    const commentKey = `comments_${postId}`;
+    let comments = JSON.parse(localStorage.getItem(commentKey) || "[]");
+
+    function saveComments() {
+      localStorage.setItem(commentKey, JSON.stringify(comments));
+    }
+
+    function renderComments() {
+      const container = document.getElementById("commentList");
+      container.innerHTML = "";
+      comments.forEach(c => container.appendChild(createCommentElement(c)));
+    }
+
+    function createCommentElement(data, isReply = false) {
+      const div = document.createElement("div");
+      div.className = isReply ? "comment reply" : "comment";
+      div.innerHTML = `
+        <p class="comment-text">💬 ${data.text}</p>
+        <div class="action-buttons">
+          <button onclick="likeComment(this)">👍</button>
+          <button onclick="dislikeComment(this)">👎</button>
+          <button onclick="editComment(this)">✏</button>
+          <button onclick="deleteComment(this)">🔚</button>
+          <button onclick="replyToComment(this)">↪</button>
+        </div>
+        <div class="replies"></div>
+      `;
+      if (data.replies) {
+        const replyContainer = div.querySelector(".replies");
+        data.replies.forEach(reply => {
+          replyContainer.appendChild(createCommentElement(reply, true));
+        });
+      }
+      div.dataset.id = data.id;
+      return div;
+    }
+
+    function addComment(parentDiv = null) {
+      const input = parentDiv
+        ? parentDiv.querySelector(".reply-input")
+        : document.getElementById("commentInput");
+
+      const text = input.value.trim();
+      if (!text) return alert("댓글을 입력하세요.");
+
+      const newComment = {
+        id: Date.now(),
+        text,
+        replies: []
+      };
+
+      if (parentDiv) {
+        const parentId = parseInt(parentDiv.dataset.id);
+        const parentComment = comments.find(c => c.id === parentId);
+        if (parentComment) parentComment.replies.push(newComment);
+        const replyBox = parentDiv.querySelector('.reply-box');
+        if (replyBox) replyBox.remove();
+      } else {
+        comments.push(newComment);
+      }
+
+      saveComments();
+      renderComments();
+      input.value = "";
+    }
+
+    function editComment(button) {
+      const commentDiv = button.closest('.comment');
+      const commentId = parseInt(commentDiv.dataset.id);
+      const commentText = commentDiv.querySelector(".comment-text");
+      const currentText = commentText.textContent.replace("💬 ", "");
+      const newText = prompt("댓글 수정", currentText);
+      if (!newText) return;
+
+      const comment = findCommentById(commentId);
+      if (comment) {
+        comment.text = newText;
+        saveComments();
+        renderComments();
+      }
+    }
+
+    function deleteComment(button) {
+      const commentDiv = button.closest('.comment');
+      const commentId = parseInt(commentDiv.dataset.id);
+      if (!confirm("삭제하시겠습니까?")) return;
+      comments = comments.filter(c => c.id !== commentId);
+      saveComments();
+      renderComments();
+    }
+
+    function replyToComment(button) {
+      const commentDiv = button.closest('.comment');
+      if (commentDiv.querySelector('.reply-box')) return;
+
+      const replyBox = document.createElement("div");
+      replyBox.className = "reply-box";
+      replyBox.innerHTML = `
+        <input class="reply-input" placeholder="답글을 입력하세요">
+        <div class="button-wrap">
+          <button onclick="addComment(this.parentElement.parentElement.parentElement)">대댓글 게시</button>
+        </div>
+      `;
+      commentDiv.appendChild(replyBox);
+    }
+
+    function likeComment(button) {
+      alert("좋아요!");
+    }
+
+    function dislikeComment(button) {
+      alert("싫어요!");
+    }
+
+    function findCommentById(id, list = comments) {
+      for (const c of list) {
+        if (c.id === id) return c;
+        const found = findCommentById(id, c.replies || []);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    renderComments();
+  </script>
+</body>
+</html>
