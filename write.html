@@ -4,18 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>도전 목표 작성</title>
+  <link rel="stylesheet" href="styles/main.css" />
   <style>
     body {
       background-color: #d0d0d0;
       font-family: sans-serif;
       margin: 0;
-    }
-
-    #header {
-      background-color: black;
-      color: white;
-      padding: 10px;
-      text-align: center;
     }
 
     main {
@@ -79,7 +73,7 @@
   </style>
 </head>
 <body>
-  <div id="header">Challex - 도전 작성</div>
+  <div id="header"></div>
 
   <main>
     <h2>도전 목표 작성</h2>
@@ -101,7 +95,10 @@
     </form>
   </main>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    $("#header").load("header.html");
+
     const imageInput = document.getElementById("image");
     let base64Image = "";
 
@@ -119,16 +116,24 @@
     document.getElementById("writeForm").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const title = document.getElementById("title").value;
-      const content = document.getElementById("content").value;
+      const title = document.getElementById("title").value.trim();
+      const content = document.getElementById("content").value.trim();
+
+      if (!title || !content) {
+        alert("제목과 내용을 모두 입력해주세요.");
+        return;
+      }
 
       const posts = JSON.parse(localStorage.getItem("posts") || "[]");
 
       const newPost = {
         id: Date.now(),
         title,
-        content,
-        image: base64Image
+        content,          // 원본 필드
+        desc: content,    // topic, post 호환용
+        image: base64Image,
+        status: "active", // topic.html에 노출
+        likes: 0          // hot.html 인기글용
       };
 
       posts.push(newPost);

@@ -13,19 +13,20 @@
     .header {
       background-color: black;
       color: white;
-      height: 45px; /*  슬림한 높이 고정 */
-      padding: 0 20px;
+      height: 55px; /* ✅ 정확한 헤더 높이 설정 */
+      padding: 0 30px; /* ✅ index.html 기준과 동일하게 */
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: 'Segoe UI', sans-serif;
+      font-size: 14px; /* ✅ 전체 텍스트 크기 균일화 */
     }
 
     .headerLeft a {
       color: white;
       text-decoration: none;
-      margin-right: 14px;
-      font-size: 13px;
+      margin-right: 16px;
+      font-size: 14px;
       line-height: 1;
     }
 
@@ -37,20 +38,20 @@
     }
 
     #search {
-      height: 26px;
+      height: 30px;
       font-size: 13px;
-      padding: 3px 10px;
-      border-radius: 14px;
+      padding: 4px 12px;
+      border-radius: 16px;
       border: none;
     }
 
     #writeBtn {
-      height: 26px;
+      height: 30px;
       font-size: 13px;
-      padding: 3px 12px;
+      padding: 4px 14px;
       background-color: white;
       color: black;
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
     }
 
@@ -63,8 +64,8 @@
       border: none;
       color: white;
       font-size: 13px;
-      padding: 3px 10px;
-      height: 26px;
+      padding: 4px 10px;
+      height: 30px;
       cursor: pointer;
       line-height: 1;
     }
@@ -72,7 +73,7 @@
     .categoryMenu {
       display: none;
       position: absolute;
-      top: 32px; /* 🔽 드롭다운 위치 조정 */
+      top: 34px;
       left: 0;
       background-color: #1e1e1e;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -101,13 +102,12 @@
 <body>
   <header class="header">
     <div class="headerLeft">
-      <a href="/" id="homeBtn">Challex</a>
+      <a href="index.html" id="homeBtn">Challex</a>
       <a href="/login.html" id="LoginBtn">Login</a>
       <a href="/signup.html" id="SignupBtn">Signup</a>
     </div>
 
     <div class="searchBarWrapper">
-      <!--  카테고리 드롭다운 -->
       <div class="categoryDropdown">
         <button class="categoryButton">카테고리 ▾</button>
         <div class="categoryMenu">
@@ -118,7 +118,7 @@
       </div>
 
       <a href="/write.html" id="writeBtn">작성하기</a>
-      <input type="text" id="search" placeholder="검색..." />
+      
     </div>
   </header>
 </body>
