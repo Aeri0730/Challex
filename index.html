@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="/styles/main.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: auto;
+      overflow-y: auto;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8f8;
+    }
+    
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -99,6 +108,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
       text-align: center;
+      border: 9px solid papayawhip;
     }
 
     .right-sidebar h3 {
@@ -126,6 +136,12 @@
         height: auto;
       }
     }
+    
+    #header {
+      min-height: 45px;
+    }
+
+
   </style>
 </head>
 <body>
@@ -142,7 +158,7 @@
     <!-- 왼쪽 카테고리 카드 -->
     <div class="left-content">
       <div class="post-card" onclick="location.href='topic.html'">
-        <img src="/images/main/category.png" alt="What Toppic">
+        <img src="images/main/category.png" alt="What Toppic">
         <div class="post-card-content">
           <div class="post-card-title">What Toppic</div>
           <div class="post-card-desc">모든 게시물을 확인하세요.</div>
@@ -150,7 +166,7 @@
       </div>
 
       <div class="post-card" onclick="location.href='realized.html'">
-        <img src="/images/main/realized.png" alt="Realized">
+        <img src="images/main/realized.png" alt="Realized">
         <div class="post-card-content">
           <div class="post-card-title">Realized</div>
           <div class="post-card-desc">완료한 도전들을 한눈에!</div>
@@ -159,16 +175,32 @@
     </div>
 
     <!-- 오른쪽 소개 박스 -->
-    <div class="right-sidebar">
-      <h3>Hot Goal</h3>
-      <p>인기 도전 영역입니다.<br>아직 구현되지 않았습니다.</p>
+    <div class="right-sidebar" onclick="location.href='hot.html'" style="cursor: pointer;">
+      <h2>Hot Goal</h2>
+      <p>🔥 지금 가장 핫한 도전은?<br>좋아요를 많이 받은 도전을 만나보세요!</p>
+      <p><h3>- 🔥현재 제일 핫한 게시글🔥 -</h3><a href="hot.html" id="hotGoalTitle" style="color:#333; text-decoration:none; font-weight:bold;"></a></p>
     </div>
   </div>
-
   <script>
-    $(function () {
-      $("#header").load("/header.html");
+  $(function () {
+    // ✅ 공통 헤더 불러오기
+    $("#header").load("header.html", function () {
+      $(window).trigger('resize');
     });
+
+    // ✅ 좋아요 1등 게시물 제목 → hot.html 링크에 표시
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const sorted = posts
+      .filter(p => p.status === "active" && typeof p.likes === "number")
+      .sort((a, b) => b.likes - a.likes);
+
+    if (sorted.length > 0) {
+      const top = sorted[0];
+      const hotEl = document.getElementById("hotGoalTitle");
+      hotEl.textContent = top.title;  // 텍스트만 대입 (링크는 이미 href="hot.html"으로 되어 있음)
+    }
+  });
   </script>
+
 </body>
 </html>
