@@ -1,0 +1,134 @@
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: auto;
+      overflow-y: auto;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8f8;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8f8;
+    }
+
+    #header {
+      background-color: black;
+      color: white;
+    }
+
+    /* Hero 영역 */
+    .hero {
+      background: url("./images/main/mainImg.jpg") no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+      height: 300px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 20px;
+    }
+
+    /* 본문 레이아웃 */
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 50px auto;
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .left-content {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      gap: 20px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .post-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .post-card-content {
+      flex: 1;
+    }
+
+    .post-card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .post-card-desc {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .right-sidebar {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      border: 9px solid papayawhip;
+    }
+
+    .right-sidebar h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .right-sidebar p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media screen and (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .post-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .post-card img {
+        width: 80%;
+        height: auto;
+      }
+    }
+    
+    #header {
+      min-height: 45px;
+    }
+

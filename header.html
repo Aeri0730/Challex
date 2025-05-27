@@ -1,125 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Challex Header</title>
-  <link rel="stylesheet" href="/styles/main.css" />
-  <style>
-    body {
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challex Header</title>
+    <link rel="stylesheet" href="/styles/header.css" />
 
-    .header {
-      background-color: black;
-      color: white;
-      height: 55px;
-      padding: 0 30px; 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 14px; 
-    }
-
-    .headerLeft a {
-      color: white;
-      text-decoration: none;
-      margin-right: 16px;
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    .searchBarWrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-
-    #search {
-      height: 30px;
-      font-size: 13px;
-      padding: 4px 12px;
-      border-radius: 16px;
-      border: none;
-    }
-
-    #writeBtn {
-      height: 30px;
-      font-size: 13px;
-      padding: 4px 14px;
-      background-color: white;
-      color: black;
-      border-radius: 16px;
-      text-decoration: none;
-    }
-
-    .categoryDropdown {
-      position: relative;
-    }
-
-    .categoryButton {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 13px;
-      padding: 4px 10px;
-      height: 30px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .categoryMenu {
-      display: none;
-      position: absolute;
-      top: 34px;
-      left: 0;
-      background-color: #1e1e1e;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      border-radius: 6px;
-      z-index: 1000;
-      min-width: 140px;
-    }
-
-    .categoryMenu a {
-      display: block;
-      padding: 10px 16px;
-      color: white;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .categoryMenu a:hover {
-      background-color: #333;
-    }
-
-    .categoryDropdown:hover .categoryMenu {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <header class="header">
-    <div class="headerLeft">
-      <a href="index.html" id="homeBtn">Challex</a>
-      <a href="/login.html" id="LoginBtn">Login</a>
-      <a href="/signup.html" id="SignupBtn">Signup</a>
-    </div>
-
-    <div class="searchBarWrapper">
-      <div class="categoryDropdown">
-        <button class="categoryButton">카테고리 ▾</button>
-        <div class="categoryMenu">
-          <a href="/topic.html">What Toppic</a>
-          <a href="/hot.html">Hot Goal</a>
-          <a href="/realized.html">Realized</a>
-        </div>
+  </head>
+  <body>
+    <header class="header">
+      <div class="headerLeft">
+        <a href="index.html" id="homeBtn">Challex</a>
+        <a href="/login.html" id="LoginBtn">Login</a>
+        <a href="/signup.html" id="SignupBtn">Signup</a>
       </div>
 
-      <a href="/write.html" id="writeBtn">작성하기</a>
+      <div class="searchBarWrapper">
+        <div class="categoryDropdown">
+          <button class="categoryButton">카테고리 ▾</button>
+          <div class="categoryMenu">
+            <a href="/topic.html">What Toppic</a>
+            <a href="/hot.html">Hot Goal</a>
+            <a href="/realized.html">Realized</a>
+          </div>
+        </div>
+
+        <a href="/write.html" id="writeBtn">작성하기</a>
+      </div>
+    </header>
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
+      import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
+
+
       
-    </div>
-  </header>
-</body>
+      const userData = localStorage.getItem("user");
+
+      if (userData) {
+        const user = JSON.parse(userData);
+        $("#LoginBtn")
+          .text("Logout")
+          .attr("href", "/index.html")
+          .off("click")
+          .on("click", function (e) {
+            e.preventDefault();
+            supabase.auth.signOut().then(() => {
+              localStorage.removeItem("user");
+              window.location.href = "/index.html";
+            });
+          });
+        $("#SignupBtn").hide();
+      } else {
+        $("#LoginBtn").text("Login").attr("href", "/login.html");
+        $("#SignupBtn").show();
+      }
+    </script>
+  </body>
 </html>
