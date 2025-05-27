@@ -1,94 +1,55 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Realized - 성공한 도전</title>
-  <link rel="stylesheet" href="styles/main.css" />
-  <style>
-    body {
-      background-color: #f8f8f8;
-      font-family: sans-serif;
-      margin: 0;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 40px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .post-item {
-      padding: 15px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .post-title {
-      font-weight: bold;
-      font-size: 16px;
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .post-title:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 700px) {
-      main {
-        margin: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div id="header"></div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(function () {
-      $("#header").load("header.html");
-    });
-  </script>
-
-  <main>
-    <h2>🎉 성공한 도전 목록</h2>
-    <div id="realizedList"></div>
-  </main>
-
-  <script>
-    function loadPosts() {
-      return JSON.parse(localStorage.getItem("posts") || "[]");
-    }
-
-    function renderRealized() {
-      const posts = loadPosts().filter(post => post.status === "success");
-      const list = document.getElementById("realizedList");
-      list.innerHTML = "";
-
-      if (posts.length === 0) {
-        list.innerHTML = "<p>아직 성공한 도전이 없습니다.</p>";
-        return;
-      }
-
-      posts.reverse().forEach(post => {
-        const div = document.createElement("div");
-        div.className = "post-item";
-
-        const link = document.createElement("a");
-        link.className = "post-title";
-        link.href = `post.html?id=${post.id}`;
-        link.textContent = post.title;
-
-        div.appendChild(link);
-        list.appendChild(div);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Realized - 성공한 도전</title>
+    <link rel="stylesheet" href="styles/listPage.css" />
+  </head>
+  <body>
+    <div id="header"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function () {
+        $("#header").load("header.html");
       });
-    }
+    </script>
 
-    document.addEventListener("DOMContentLoaded", renderRealized);
-  </script>
-</body>
+    <main>
+      <h2>🎉 성공한 도전 목록</h2>
+      <div id="realizedList"></div>
+    </main>
+
+    <script>
+      function loadPosts() {
+        return JSON.parse(localStorage.getItem("posts") || "[]");
+      }
+
+      function renderRealized() {
+        const posts = loadPosts().filter((post) => post.status === "success");
+        const list = document.getElementById("realizedList");
+        list.innerHTML = "";
+
+        if (posts.length === 0) {
+          list.innerHTML = "<p>아직 성공한 도전이 없습니다.</p>";
+          return;
+        }
+
+        posts.reverse().forEach((post) => {
+          const div = document.createElement("div");
+          div.className = "post-item";
+
+          const link = document.createElement("a");
+          link.className = "post-title";
+          link.href = `post.html?id=${post.id}`;
+          link.textContent = post.title;
+
+          div.appendChild(link);
+          list.appendChild(div);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", renderRealized);
+    </script>
+  </body>
 </html>

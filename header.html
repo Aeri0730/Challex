@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Challex Header</title>
     <link rel="stylesheet" href="/styles/header.css" />
-
   </head>
   <body>
     <header class="header">
@@ -32,28 +31,53 @@
       import { supabase } from "./js/supabaseClient.js";
       import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
 
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-      
-      const userData = localStorage.getItem("user");
+      console.log("getSession 결과 - session:", session); // <-- 추가
+      console.log("getSession 결과 - error:", error); // <-- 추가
+      if (error || !session) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html"; // 로그인 페이지로 이동
+        
+      }
 
-      if (userData) {
-        const user = JSON.parse(userData);
+      if (session) {
         $("#LoginBtn")
           .text("Logout")
-          .attr("href", "/index.html")
+          .attr("href", "#")
           .off("click")
-          .on("click", function (e) {
+          .on("click", async function (e) {
             e.preventDefault();
-            supabase.auth.signOut().then(() => {
-              localStorage.removeItem("user");
-              window.location.href = "/index.html";
-            });
+            const { error: signOutError } = await supabase.auth.signOut();
+            if (signOutError) {
+              console.error("로그아웃 오류:", signOutError.message);
+              alert("로그아웃 중 문제가 발생했습니다.");
+            } else {
+              alert("로그아웃 되었습니다.");
+              window.location.reload();
+            }
           });
+
         $("#SignupBtn").hide();
       } else {
-        $("#LoginBtn").text("Login").attr("href", "/login.html");
+        $("#LoginBtn").text("Login").attr("href", "/login.html").off("click"); // 로그아웃 클릭 이벤트 제거
+
         $("#SignupBtn").show();
       }
+
+      $("#writeBtn").on("click", async function (e) {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session) {
+          e.preventDefault();
+          alert("글을 작성하려면 로그인이 필요합니다.");
+          window.location.href = "/login.html";
+        }
+      });
     </script>
   </body>
 </html>
