@@ -36,13 +36,6 @@
         error,
       } = await supabase.auth.getSession();
 
-      console.log("getSession 결과 - session:", session); // <-- 추가
-      console.log("getSession 결과 - error:", error); // <-- 추가
-      if (error || !session) {
-        alert("로그인이 필요합니다.");
-        window.location.href = "login.html"; // 로그인 페이지로 이동
-        
-      }
 
       if (session) {
         $("#LoginBtn")
