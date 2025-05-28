@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="styles/post.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
-      /* 간단한 CSS 예시 */
+      #likeBtn.liked {
+        background-color: #007bff;
+        color: white;
+      }
       body {
         font-family: sans-serif;
         margin: 0;
@@ -29,22 +32,21 @@
       }
       .post-image-container {
         display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px;
       }
       .post-image {
         max-width: 48%;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
       }
-      #postMedia{
-        width: 48%;
-        margin-bottom: 20px;
+      #postMedia {
+        width: 52%;
       }
+
       .post-content {
         line-height: 1.6;
         margin-bottom: 40px;
       }
+
       #likeSection {
         margin-bottom: 20px;
       }
@@ -52,12 +54,6 @@
         cursor: pointer;
         padding: 8px 15px;
       }
-      #likeBtn.liked {
-        background-color: #007bff;
-        color: white;
-      }
-
-
       .comment-box {
         margin-top: 30px;
         padding-top: 20px;
@@ -111,7 +107,7 @@
       .reply-box input {
         width: calc(100% - 130px);
         margin-right: 5px;
-      } 
+      }
     </style>
   </head>
   <body>
@@ -127,7 +123,6 @@
           src=""
           alt="첨부 이미지"
           style="display: none" />
-
         <div id="postMedia"></div>
       </div>
 
@@ -158,8 +153,8 @@
       const postContentEl = document.getElementById("postContent");
       const likeBtn = document.getElementById("likeBtn");
       const likeCountEl = document.getElementById("likeCount");
-      const commentInputEl = document.getElementById("commentInput"); // 댓글 입력창
-      const commentListEl = document.getElementById("commentList"); // 댓글 목록
+      const commentListEl = document.getElementById("commentList");
+      const commentInputEl = document.getElementById("commentInput");
 
       let currentPost = null;
       let currentUser = null;
@@ -170,13 +165,13 @@
 
       async function loadPostDetails(postId) {
         try {
-          const { data: postData, error } = await supabase
+          const { data: postData, error: postError } = await supabase
             .from("feeds")
             .select(`*, users!writer_id ( name )`)
             .eq("feed_id", postId)
             .single();
 
-          if (error) throw error;
+          if (postError) throw postError;
           if (!postData) throw new Error("게시물을 찾을 수 없습니다.");
 
           currentPost = postData;
@@ -206,8 +201,19 @@
             postMediaEl.innerHTML = `<video controls style="width: 100%"><source src="${currentPost.media_url}" type="video/*"></video>`;
           }
 
+          const { count: initialLikeCount, error: countError } = await supabase
+            .from("hottopic")
+            .select("feed_id", { count: "exact", head: true })
+            .eq("feed_id", postId);
+
+          if (countError) {
+            console.error("Error fetching initial like count:", countError);
+          }
+
           await checkIfLiked(postId);
-          updateLikeUI(currentPost.likes || 0, isCurrentlyLiked);
+          updateLikeUI(initialLikeCount || 0, isCurrentlyLiked);
+
+          initializeComments();
         } catch (error) {
           console.error("Error loading post:", error);
           document.querySelector("main").innerHTML = `<p>${error.message}</p>`;
@@ -221,7 +227,7 @@
         }
         const { data, error } = await supabase
           .from("hottopic")
-          .select("*")
+          .select("*", { head: true })
           .eq("feed_id", postId)
           .eq("checked_id", currentUser.id)
           .maybeSingle();
@@ -265,8 +271,8 @@
         likeBtn.disabled = false;
       }
 
-      let comments = []; 
-      let commentKey = ""; 
+      let comments = [];
+      let commentKey = "";
 
       function initializeComments() {
         if (!currentPostId) return;
@@ -281,7 +287,7 @@
       }
 
       function renderComments() {
-        if (!commentKey) return; 
+        if (!commentKey || !commentListEl) return;
         commentListEl.innerHTML = "";
         comments.forEach((c) =>
           commentListEl.appendChild(createCommentElement(c))
@@ -291,7 +297,7 @@
       function createCommentElement(data, isReply = false) {
         const div = document.createElement("div");
         div.className = isReply ? "comment reply" : "comment";
-        div.dataset.id = data.id; 
+        div.dataset.id = data.id;
 
         div.innerHTML = `
               <p class="comment-text">💬 ${data.text}</p>
@@ -343,7 +349,7 @@
         if (!text) return alert("댓글을 입력하세요.");
 
         const newComment = {
-          id: Date.now(), 
+          id: Date.now(),
           text: text,
           replies: [],
         };
@@ -467,10 +473,9 @@
         const { data: userResponse } = await supabase.auth.getUser();
         currentUser = userResponse.user;
 
-        await loadPostDetails(currentPostId); 
-        initializeComments(); 
+        await loadPostDetails(currentPostId);
 
-        likeBtn.addEventListener("click", handleLike); 
+        likeBtn.addEventListener("click", handleLike);
       }
 
       init();
