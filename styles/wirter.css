@@ -33,14 +33,20 @@ textarea {
   box-sizing: border-box;
 }
 
-
 .file-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
   margin-bottom: 20px;
 }
-
+#endDate {
+  height: 35px;
+  width: 200px;
+  margin-bottom: 20px;
+  border-color: rgb(186, 185, 185);
+  border-radius: 10px;
+  cursor: pointer;
+}
 .submitWrapper {
   display: flex;
   justify-content: center;
@@ -66,9 +72,19 @@ button:hover {
 }
 #category {
   height: 37px;
-  width: 100px;
+  width: 200px;
   margin-bottom: 20px;
   border-color: rgb(186, 185, 185);
   border-radius: 10px;
   cursor: pointer;
+}
+.dateWrapper {
+  display: flex;
+  text-align: center;
+  gap: 10px;
+}
+.categoryWrapper {
+  display: flex;
+  text-align: center;
+  gap: 10px;
 }
