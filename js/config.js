@@ -1,0 +1,4 @@
+export const SUPABASE_URL = "https://wesjsenpshgaearurvsj.supabase.co";
+export const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc2pzZW5wc2hnYWVhcnVydnNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0NzEzOTYsImV4cCI6MjA2MzA0NzM5Nn0.aMHJyP18rdEXbSKo43OR6_O1Jqzm857xUPOEcM2UinE";
+export const PUBLIC_STORAGE_BUCKET = "challexstore";
