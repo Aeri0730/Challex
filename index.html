@@ -1,206 +1,135 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Challex - 메인</title>
-  <link rel="stylesheet" href="/styles/index.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: auto;
-      overflow-y: auto;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f8f8;
-    }
-    
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f8f8;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challex - 메인</title>
+    <link rel="stylesheet" href="/styles/index.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="header"></div>
 
-    #header {
-      background-color: black;
-      color: white;
-    }
+    <section class="hero">
+      <h1>Welcome to Challex</h1>
+      <p>당신의 한계에 도전하세요</p>
+    </section>
 
-    /* Hero 영역 */
-    .hero {
-      background: url("./images/main/mainImg.jpg") no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 120px 20px;
-      height: 300px;
-      position: relative;
-    }
+    <div class="main-container">
+      <div class="left-content">
+        <div class="post-card" onclick="location.href='topic.html'">
+          <img src="images/main/category.png" alt="What Toppic" />
+          <div class="post-card-content">
+            <div class="post-card-title">What Toppic</div>
+            <div class="post-card-desc">모든 게시물을 확인하세요.</div>
+          </div>
+        </div>
 
-    .hero h1 {
-      font-size: 42px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 20px;
-    }
-
-    /* 본문 레이아웃 */
-    .main-container {
-      display: flex;
-      max-width: 1200px;
-      margin: 50px auto;
-      gap: 30px;
-      padding: 0 20px;
-    }
-
-    .left-content {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .post-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      gap: 20px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .post-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .post-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .post-card-content {
-      flex: 1;
-    }
-
-    .post-card-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .post-card-desc {
-      font-size: 14px;
-      color: #444;
-    }
-
-    .right-sidebar {
-      flex: 1;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-      text-align: center;
-      border: 9px solid papayawhip;
-    }
-
-    .right-sidebar h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .right-sidebar p {
-      font-size: 14px;
-      color: #777;
-    }
-
-    @media screen and (max-width: 768px) {
-      .main-container {
-        flex-direction: column;
-      }
-
-      .post-card {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .post-card img {
-        width: 80%;
-        height: auto;
-      }
-    }
-    
-    #header {
-      min-height: 45px;
-    }
-
-
-  </style>
-</head>
-<body>
-  <div id="header"></div>
-
-  <!-- Hero 영역 -->
-  <section class="hero">
-    <h1>Welcome to Challex</h1>
-    <p>당신의 한계에 도전하세요</p>
-  </section>
-
-  <!-- 본문 콘텐츠 -->
-  <div class="main-container">
-    <!-- 왼쪽 카테고리 카드 -->
-    <div class="left-content">
-      <div class="post-card" onclick="location.href='topic.html'">
-        <img src="images/main/category.png" alt="What Toppic">
-        <div class="post-card-content">
-          <div class="post-card-title">What Toppic</div>
-          <div class="post-card-desc">모든 게시물을 확인하세요.</div>
+        <div class="post-card" onclick="location.href='realized.html'">
+          <img src="images/main/realized.png" alt="Realized" />
+          <div class="post-card-content">
+            <div class="post-card-title">Realized</div>
+            <div class="post-card-desc">완료한 도전들을 한눈에!</div>
+          </div>
         </div>
       </div>
 
-      <div class="post-card" onclick="location.href='realized.html'">
-        <img src="images/main/realized.png" alt="Realized">
-        <div class="post-card-content">
-          <div class="post-card-title">Realized</div>
-          <div class="post-card-desc">완료한 도전들을 한눈에!</div>
+      <div
+        class="right-sidebar"
+        onclick="location.href='hot.html'"
+        style="cursor: pointer">
+        <h2>Hot Goal</h2>
+        <p>
+          🔥 지금 가장 핫한 도전은?<br />좋아요를 많이 받은 도전을 만나보세요!
+        </p>
+
+        <h3>- 🔥현재 제일 핫한 게시글 TOP 3🔥 -</h3>
+        <div
+          id="hotGoalsListContainer"
+          style="text-align: left; padding-left: 10px">
+          <p>로딩 중...</p>
         </div>
+        <p style="text-align: right; margin-top: 15px">
+          <a
+            href="hot.html"
+            style="font-size: 13px; color: #555; text-decoration: none"
+            >더보기...</a
+          >
+        </p>
       </div>
     </div>
 
-    <!-- 오른쪽 소개 박스 -->
-    <div class="right-sidebar" onclick="location.href='hot.html'" style="cursor: pointer;">
-      <h2>Hot Goal</h2>
-      <p>🔥 지금 가장 핫한 도전은?<br>좋아요를 많이 받은 도전을 만나보세요!</p>
-      <p><h3>- 🔥현재 제일 핫한 게시글🔥 -</h3><a href="hot.html" id="hotGoalTitle" style="color:#333; text-decoration:none; font-weight:bold;"></a></p>
-    </div>
-  </div>
-  <script>
-  $(function () {
-    // ✅ 공통 헤더 불러오기
-    $("#header").load("header.html", function () {
-      $(window).trigger('resize');
-    });
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
 
-    // ✅ 좋아요 1등 게시물 제목 → hot.html 링크에 표시
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    const sorted = posts
-      .filter(p => p.status === "active" && typeof p.likes === "number")
-      .sort((a, b) => b.likes - a.likes);
+      $(function () {
+        $("#header").load("header.html", function () {
+          // $(window).trigger('resize');
+        });
 
-    if (sorted.length > 0) {
-      const top = sorted[0];
-      const hotEl = document.getElementById("hotGoalTitle");
-      hotEl.textContent = top.title;  // 텍스트만 대입 (링크는 이미 href="hot.html"으로 되어 있음)
-    }
-  });
-  </script>
+        async function displayTopHotGoals() {
+          const hotGoalsListContainer = document.getElementById(
+            "hotGoalsListContainer"
+          );
+          if (!hotGoalsListContainer) {
+            console.error(
+              "Hot goals container (#hotGoalsListContainer) not found!"
+            );
+            return;
+          }
 
-</body>
+          try {
+            const { data: topPosts, error } = await supabase.rpc(
+              "get_hot_feeds_by_hottopic_count",
+              { feed_limit: 3 }
+            );
+
+            if (error) {
+              console.error("Error fetching top hot goals:", error.message);
+              hotGoalsListContainer.innerHTML =
+                "<p style='color:red;'>인기 게시물을 불러오는 중 오류가 발생했습니다.</p>";
+              return;
+            }
+
+            if (topPosts && topPosts.length > 0) {
+              hotGoalsListContainer.innerHTML = "";
+              topPosts.forEach((post, index) => {
+                const postLink = document.createElement("a");
+                postLink.href = `/post.html?feed_id=${post.feed_id}`;
+                postLink.textContent = `${index + 1}. ${post.title}`;
+
+                postLink.style.display = "flex";
+                postLink.style.justifyContent = "center";
+                postLink.style.color = "#333";
+                postLink.style.textDecoration = "none";
+                postLink.style.marginBottom = "8px";
+                postLink.style.fontSize = "16px";
+                postLink.style.fontWeight = "500";
+                (postLink.style.fontfamily = "Segoe UI"), "sans-serif";
+                postLink.style.marginRight = "10px";
+
+                postLink.onmouseover = () =>
+                  (postLink.style.textDecoration = "underline");
+                postLink.onmouseout = () =>
+                  (postLink.style.textDecoration = "none");
+
+                hotGoalsListContainer.appendChild(postLink);
+              });
+            } else {
+              hotGoalsListContainer.innerHTML =
+                "<p>아직 인기 게시물이 없습니다.</p>";
+            }
+          } catch (e) {
+            console.error("Exception fetching top hot goals:", e);
+            if (hotGoalsListContainer) {
+              hotGoalsListContainer.innerHTML =
+                "<p style='color:red;'>인기 게시물 로드 중 예외가 발생했습니다.</p>";
+            }
+          }
+        }
+
+        displayTopHotGoals();
+      });
+    </script>
+  </body>
 </html>

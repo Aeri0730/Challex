@@ -9,7 +9,6 @@
     
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
       background-color: #f8f8f8;
     }
 
@@ -20,7 +19,7 @@
 
     /* Hero 영역 */
     .hero {
-      background: url("./images/main/mainImg.jpg") no-repeat center center/cover;
+      background: url("../images/main/mainImg.jpg") no-repeat center center/cover;
       color: white;
       text-align: center;
       padding: 120px 20px;

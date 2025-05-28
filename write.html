@@ -80,7 +80,7 @@
         }
       });
 
-      // 파일 이름 정제 함수 (추가)
+      // 파일 이름 정제 함수
       function sanitizeFilename(filename) {
         if (!filename) return ""; // 파일 이름이 없으면 빈 문자열 반환
         const extension = filename.split(".").pop() || ""; // (없으면 빈 문자열)
@@ -99,14 +99,14 @@
         nameWithoutExtension = nameWithoutExtension.replace(/\s+/g, "_");
         // 한글 및 안전하지 않은 문자 제거
         nameWithoutExtension = nameWithoutExtension.replace(/[^a-z0-9_-]/g, "");
-        // 너무 길면 자르기
+        // 파일 이름 길이 제한 (50자)
         nameWithoutExtension = nameWithoutExtension.substring(0, 50);
 
         return `${nameWithoutExtension}.${extension}`;
       }
-      // 파일 이름 정제 함수
 
-      // 파일 업로드 함수
+
+
       async function uploadFile(file, path) {
         if (!file) return null;
 
@@ -122,10 +122,10 @@
           const {
             data: { publicUrl },
           } = storagebox.getPublicUrl(path);
-          console.log("업로드 성공! URL:", publicUrl); // 성공 로그 추가
+
           return publicUrl;
         } catch (error) {
-          console.error("파일 업로드 오류:", error.message, error); // 오류 로그 강화
+          console.error("파일 업로드 오류:", error.message, error); 
           alert(`파일 업로드 중 오류가 발생했습니다: ${error.message}`);
           return null;
         }
@@ -139,18 +139,17 @@
         submitButton.textContent = "등록 중...";
 
         try {
-          // 사용자 확인
+
           const {
             data: { user },
             error: userError,
           } = await supabase.auth.getUser();
           if (userError || !user) {
             alert("로그인이 필요합니다.");
-            window.location.href = "login.html"; // 로그인 페이지로 이동
+            window.location.href = "login.html"; 
             return;
           }
 
-          //  폼 데이터 가져오기
           const title = document.getElementById("title").value.trim();
           const content = document.getElementById("content").value.trim();
           const category = document.getElementById("category").value;
@@ -158,7 +157,7 @@
 
           if (!title || !content || !endDateInput) {
             alert("제목, 내용, 종료 날짜를 모두 입력해주세요.");
-            submitButton.disabled = false; // 버튼 다시 활성화
+            submitButton.disabled = false; 
             submitButton.textContent = "등록";
             return;
           }
@@ -166,10 +165,8 @@
           const endDate = new Date(endDateInput).toISOString();
           const writer_id = user.id;
 
-          // 파일 업로드
           const timestamp = Date.now();
 
-          //  파일 이름 정제 함수 사용하도록 수정
           const imagePath = imageFile
             ? `public/${writer_id}/image_${timestamp}_${sanitizeFilename(
                 imageFile.name
@@ -180,12 +177,8 @@
                 mediaFile.name
               )}`
             : null;
-          // 파일 이름 정제 함수 사용하도록 수정
 
-          console.log("이미지 파일 확인:", imageFile); // 로그 추가
-          console.log("미디어 파일 확인:", mediaFile); // 로그 추가
-          console.log("생성된 이미지 경로:", imagePath); // 로그 추가
-          console.log("생성된 미디어 경로:", mediaPath); // 로그 추가
+
 
           const imageUrl = imagePath
             ? await uploadFile(imageFile, imagePath)
@@ -194,7 +187,6 @@
             ? await uploadFile(mediaFile, mediaPath)
             : null;
 
-          //  데이터베이스 삽입
           const newPost = {
             title,
             content,

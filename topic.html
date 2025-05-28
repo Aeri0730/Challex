@@ -32,7 +32,6 @@
       async function loadFeeds() {
         const { data, error } = await supabase
           .from("feeds")
-          // ❗️ 'users' 뒤에 '!외래키컬럼명' 을 추가하여 관계를 명시합니다.
           .select(
             `
             feed_id,
@@ -50,10 +49,9 @@
             "<p>게시물을 불러오는 중 오류가 발생했습니다.</p>";
           return [];
         }
-        console.log("Loaded data:", data);
         return data || [];
       }
-      
+
       function formatDate(dateString) {
         if (!dateString) return "마감일 없음";
         const date = new Date(dateString);

@@ -20,36 +20,94 @@
       <div id="realizedList"></div>
     </main>
 
-    <script>
-      function loadPosts() {
-        return JSON.parse(localStorage.getItem("posts") || "[]");
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
+
+      const postList = document.getElementById("postList");
+
+      async function loadFeeds() {
+        const { data, error } = await supabase
+          .from("feeds")
+          .select(
+            `
+            feed_id,
+            title,
+            endDate,
+            status,
+            users!writer_id ( name ) 
+          `
+          )
+          .eq("status", false);
+
+        if (error) {
+          console.error("Error loading feeds with users:", error);
+          postList.innerHTML =
+            "<p>게시물을 불러오는 중 오류가 발생했습니다.</p>";
+          return [];
+        }
+        return data || [];
       }
 
-      function renderRealized() {
-        const posts = loadPosts().filter((post) => post.status === "success");
-        const list = document.getElementById("realizedList");
-        list.innerHTML = "";
+      function formatDate(dateString) {
+        if (!dateString) return "마감일 없음";
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}.${month}.${day}`;
+      }
+
+      async function renderPosts() {
+        const posts = await loadFeeds();
+        postList.innerHTML = "";
 
         if (posts.length === 0) {
-          list.innerHTML = "<p>아직 성공한 도전이 없습니다.</p>";
+          postList.innerHTML = "<p> 완료된 게시물이 없습니다.</p>";
           return;
         }
 
-        posts.reverse().forEach((post) => {
+        posts.reverse().forEach((post, index) => {
           const div = document.createElement("div");
           div.className = "post-item";
 
-          const link = document.createElement("a");
-          link.className = "post-title";
-          link.href = `post.html?id=${post.id}`;
-          link.textContent = post.title;
+          const leftDiv = document.createElement("div");
+          leftDiv.style.float = "left";
 
-          div.appendChild(link);
-          list.appendChild(div);
+          const indexSpan = document.createElement("span");
+          indexSpan.className = "post-index";
+          indexSpan.textContent = `${index + 1}. `;
+
+          const title = document.createElement("span");
+          title.className = "post-title";
+          title.textContent = post.title;
+          title.onclick = () => {
+            window.location.href = `/post.html?feed_id=${post.feed_id}`;
+          };
+
+          leftDiv.appendChild(indexSpan);
+          leftDiv.appendChild(title);
+
+          const rightDiv = document.createElement("div");
+          rightDiv.className = "post-meta";
+
+          const writerSpan = document.createElement("span");
+          writerSpan.className = "post-writer";
+          writerSpan.textContent = post.users?.name || "알 수 없음";
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "post-enddate";
+          dateSpan.textContent = formatDate(post.endDate);
+
+          rightDiv.appendChild(writerSpan);
+          rightDiv.appendChild(dateSpan);
+
+          div.appendChild(leftDiv);
+          div.appendChild(rightDiv);
+          postList.appendChild(div);
         });
       }
 
-      document.addEventListener("DOMContentLoaded", renderRealized);
+      renderPosts();
     </script>
   </body>
 </html>
