@@ -69,6 +69,11 @@ button:hover {
   main {
     margin: 40px 20px;
   }
+  .file-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
 }
 #category {
   height: 37px;
