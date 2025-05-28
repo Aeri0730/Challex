@@ -1,173 +1,220 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>도전 목표 작성</title>
-  <link rel="stylesheet" href="styles/main.css" />
-  <style>
-    body {
-      background-color: #d0d0d0;
-      font-family: sans-serif;
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>도전 목표 작성</title>
+    <link rel="stylesheet" href="styles/wirter.css" />
+  </head>
+  <body>
+    <div id="header"></div>
 
-    main {
-      max-width: 600px;
-      margin: 80px auto;
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+    <main>
+      <h2>작성하기</h2>
+      <form id="writeForm">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" required />
 
-    h2 {
-      text-align: center;
-    }
+        <label for="content">내용</label>
+        <textarea id="content" name="content" rows="6" required></textarea>
 
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-    }
+        <div class="file-row">
+          <div class="dateWrapper">
+            <label for="endDate">종료 날짜</label>
+            <input type="date" id="endDate" name="endDate" required /></div>
+             <div class="categoryWrapper">
+            <label for="category">카테고리</label>
+            <select id="category" name="category">
+              <option value="exercise">운동</option>
+              <option value="study">공부</option>
+              <option value="art">예술</option>
+              <option value="etc">기타</option>
+            </select>
+          </div>     </div>
 
-    input[type="text"], textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
+  
+        </div>
 
-    .file-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+        <div class="file-row">
+          <label for="image">이미지 첨부</label>
+          <input type="file" id="image" name="image" accept="image/*" />
+        </div>
 
-    .submitWrapper {
-      display: flex;
-      justify-content: center;
-    }
+        <div class="file-row">
+          <label for="media">오디오/비디오 첨부</label>
+          <input type="file" id="media" name="media" accept="audio/*,video/*" />
+        </div>
 
-    button {
-      padding: 10px 20px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+        <div class="submitWrapper">
+          <button type="submit">등록</button>
+        </div>
+      </form>
+    </main>
 
-    button:hover {
-      background-color: #555;
-    }
+    <script type="module">
+      import { supabase, storagebox } from "./js/supabaseClient.js";
+      import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
 
-    @media (max-width: 700px) {
-      main {
-        margin: 40px 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div id="header"></div>
+      $("#header").load("header.html");
 
-  <main>
-    <h2>도전 목표 작성</h2>
-    <form id="writeForm">
-      <label for="title">제목</label>
-      <input type="text" id="title" name="title" required />
+      const imageInput = document.getElementById("image");
+      const mediaInput = document.getElementById("media");
+      const form = document.getElementById("writeForm");
 
-      <label for="content">내용</label>
-      <textarea id="content" name="content" rows="6" required></textarea>
+      let imageFile = null;
+      let mediaFile = null;
+      let mediaType = "";
 
-      <div class="file-row">
-        <label for="image">이미지 첨부</label>
-        <input type="file" id="image" name="image" accept="image/*" />
-      </div>
+      imageInput.addEventListener("change", () => {
+        imageFile = imageInput.files[0] || null;
+      });
 
-      <div class="file-row">
-        <label for="media">오디오/비디오 첨부</label>
-        <input type="file" id="media" name="media" accept="audio/*,video/*" />
-      </div>
-
-      <div class="submitWrapper">
-        <button type="submit">등록</button>
-      </div>
-    </form>
-  </main>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $("#header").load("header.html");
-
-    const imageInput = document.getElementById("image");
-    const mediaInput = document.getElementById("media");
-
-    let base64Image = "";
-    let base64Media = "";
-    let mediaType = ""; // audio 또는 video
-
-    // 이미지 처리
-    imageInput.addEventListener("change", function () {
-      const file = imageInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          base64Image = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // 오디오/비디오 처리
-    mediaInput.addEventListener("change", function () {
-      const file = mediaInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          base64Media = e.target.result;
+      mediaInput.addEventListener("change", () => {
+        const file = mediaInput.files[0];
+        if (file) {
+          mediaFile = file;
           mediaType = file.type.startsWith("audio") ? "audio" : "video";
-        };
-        reader.readAsDataURL(file);
+        } else {
+          mediaFile = null;
+          mediaType = "";
+        }
+      });
+
+      // 파일 이름 정제 함수
+      function sanitizeFilename(filename) {
+        if (!filename) return ""; // 파일 이름이 없으면 빈 문자열 반환
+        const extension = filename.split(".").pop() || ""; // (없으면 빈 문자열)
+        let nameWithoutExtension = filename.substring(
+          0,
+          filename.lastIndexOf(".")
+        );
+        if (filename.lastIndexOf(".") === -1) {
+          // 확장자가 없는 경우
+          nameWithoutExtension = filename;
+        }
+
+        //소문자로 변경
+        nameWithoutExtension = nameWithoutExtension.toLowerCase();
+        // 공백을 밑줄로 변경
+        nameWithoutExtension = nameWithoutExtension.replace(/\s+/g, "_");
+        // 한글 및 안전하지 않은 문자 제거
+        nameWithoutExtension = nameWithoutExtension.replace(/[^a-z0-9_-]/g, "");
+        // 파일 이름 길이 제한 (50자)
+        nameWithoutExtension = nameWithoutExtension.substring(0, 50);
+
+        return `${nameWithoutExtension}.${extension}`;
       }
-    });
 
-    // 폼 제출
-    document.getElementById("writeForm").addEventListener("submit", function (e) {
-      e.preventDefault();
 
-      const title = document.getElementById("title").value.trim();
-      const content = document.getElementById("content").value.trim();
 
-      if (!title || !content) {
-        alert("제목과 내용을 모두 입력해주세요.");
-        return;
+      async function uploadFile(file, path) {
+        if (!file) return null;
+
+        try {
+          const { data, error } = await storagebox //  버킷 이름
+            .upload(path, file, {
+              cacheControl: "3600", // 캐시 설정
+              upsert: false, //덮어쓰기 방지
+            });
+
+          if (error) throw error;
+
+          const {
+            data: { publicUrl },
+          } = storagebox.getPublicUrl(path);
+
+          return publicUrl;
+        } catch (error) {
+          console.error("파일 업로드 오류:", error.message, error); 
+          alert(`파일 업로드 중 오류가 발생했습니다: ${error.message}`);
+          return null;
+        }
       }
 
-      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      const newPost = {
-        id: Date.now(),
-        title,
-        content,
-        desc: content,
-        image: base64Image,
-        media: base64Media,
-        mediaType: mediaType,
-        status: "active",
-        likes: 0
-      };
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "등록 중...";
 
-      posts.push(newPost);
-      localStorage.setItem("posts", JSON.stringify(posts));
+        try {
 
-      alert("글이 저장되었습니다!");
-      window.location.href = "topic.html";
-    });
-  </script>
-</body>
+          const {
+            data: { user },
+            error: userError,
+          } = await supabase.auth.getUser();
+          if (userError || !user) {
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html"; 
+            return;
+          }
+
+          const title = document.getElementById("title").value.trim();
+          const content = document.getElementById("content").value.trim();
+          const category = document.getElementById("category").value;
+          const endDateInput = document.getElementById("endDate").value;
+
+          if (!title || !content || !endDateInput) {
+            alert("제목, 내용, 종료 날짜를 모두 입력해주세요.");
+            submitButton.disabled = false; 
+            submitButton.textContent = "등록";
+            return;
+          }
+
+          const endDate = new Date(endDateInput).toISOString();
+          const writer_id = user.id;
+
+          const timestamp = Date.now();
+
+          const imagePath = imageFile
+            ? `public/${writer_id}/image_${timestamp}_${sanitizeFilename(
+                imageFile.name
+              )}`
+            : null;
+          const mediaPath = mediaFile
+            ? `public/${writer_id}/media_${timestamp}_${sanitizeFilename(
+                mediaFile.name
+              )}`
+            : null;
+
+
+
+          const imageUrl = imagePath
+            ? await uploadFile(imageFile, imagePath)
+            : null;
+          const mediaUrl = mediaPath
+            ? await uploadFile(mediaFile, mediaPath)
+            : null;
+
+          const newPost = {
+            title,
+            content,
+            endDate,
+            category,
+            status: true, // 기본값
+            writer_id,
+            image_url: imageUrl,
+            media_url: mediaUrl,
+            media_type: mediaFile ? mediaType : null,
+          };
+
+          const { error: insertError } = await supabase
+            .from("feeds")
+            .insert([newPost]);
+
+          if (insertError) throw insertError; // DB 삽입 오류 시 throw
+
+          alert("글이 성공적으로 등록되었습니다! ");
+          window.location.href = "topic.html";
+        } catch (error) {
+          console.error("글 등록 오류:", error.message, error);
+          alert(`글 등록 중 오류가 발생했습니다: ${error.message}`);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "등록";
+        }
+      });
+    </script>
+  </body>
 </html>

@@ -1,108 +1,128 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hot Goal - 인기 도전</title>
-  <link rel="stylesheet" href="styles/main.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f8f8;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hot Goal - 인기 도전</title>
+    <link rel="stylesheet" href="styles/listPage.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+    <main>
+      <h2>🔥 Hot Goal</h2>
+      <div id="hotList"></div>
+    </main>
 
-    main {
-      max-width: 800px;
-      margin: 50px auto;
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .post-item {
-      padding: 16px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .post-title {
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      color: #333;
-    }
-
-    .post-title:hover {
-      text-decoration: underline;
-    }
-
-    .like-count {
-      font-size: 14px;
-      color: #777;
-      margin-top: 6px;
-    }
-
-    @media (max-width: 700px) {
-      main {
-        margin: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div id="header"></div>
-  <main>
-    <h2>🔥 Hot Goal</h2>
-    <div id="hotList"></div>
-  </main>
-
-  <script>
-    $("#header").load("header.html");
-
-    function loadPosts() {
-      return JSON.parse(localStorage.getItem("posts") || "[]");
-    }
-
-    function renderHotPosts() {
-      const posts = loadPosts();
-
-      const hotPosts = [...posts]
-        .filter(post => post.status === "active" && typeof post.likes === "number")
-        .sort((a, b) => b.likes - a.likes)
-        .slice(0, 3);
-
-      const list = document.getElementById("hotList");
-      list.innerHTML = "";
-
-      if (hotPosts.length === 0) {
-        list.innerHTML = "<p>🔥 아직 인기 도전이 없습니다.</p>";
-        return;
-      }
-
-      hotPosts.forEach(post => {
-        const div = document.createElement("div");
-        div.className = "post-item";
-
-        const title = document.createElement("div");
-        title.className = "post-title";
-        title.textContent = post.title;
-        title.onclick = () => {
-          window.location.href = `post.html?id=${post.id}`;
-        };
-
-        const likes = document.createElement("div");
-        likes.className = "like-count";
-        likes.textContent = `❤️ 좋아요 ${post.likes}개`;
-
-        div.appendChild(title);
-        div.appendChild(likes);
-        list.appendChild(div);
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
+      $(function () {
+        $("#header").load("header.html", function (response, status, xhr) {
+          if (status == "error") {
+            console.error("Header loading failed:", xhr.status, xhr.statusText);
+          }
+        });
       });
-    }
 
-    document.addEventListener("DOMContentLoaded", renderHotPosts);
-  </script>
-</body>
+      const hotListEl = document.getElementById("hotList");
+
+      async function loadHotFeeds() {
+        const { data, error } = await supabase.rpc(
+          "get_hot_feeds_by_hottopic_count",
+          { feed_limit: 10 }
+        ); // 상위 10개
+
+        if (error) {
+          console.error("Error loading hot feeds via RPC:", error);
+          if (hotListEl) {
+            hotListEl.innerHTML =
+              "<p>인기 게시물을 불러오는 중 오류가 발생했습니다.</p>";
+          }
+          return [];
+        }
+
+        return (data || []).map((post) => ({
+          feed_id: post.feed_id,
+          title: post.title,
+          endDate: post.endDate,
+          status: post.status,
+          likes: post.like_count, // RPC에서 반환된 like_count를 likes로 사용
+          users: { name: post.writer_name }, // 기존 코드와 호환되도록 users 객체 생성
+        }));
+      }
+
+      function formatDate(dateString) {
+        if (!dateString) return "마감일 없음";
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}.${month}.${day}`;
+      }
+
+      async function renderHotPosts() {
+        if (!hotListEl) {
+          console.error("hotList element not found.");
+          return;
+        }
+        const posts = await loadHotFeeds();
+        hotListEl.innerHTML = "";
+
+        if (posts.length === 0) {
+          hotListEl.innerHTML = "<p>인기 있는 게시물이 없습니다.</p>";
+          return;
+        }
+
+        posts.forEach((post, index) => {
+          const div = document.createElement("div");
+          div.className = "post-item";
+
+          const leftDiv = document.createElement("div");
+          leftDiv.style.float = "left";
+
+          const indexSpan = document.createElement("span");
+          indexSpan.className = "post-index";
+          indexSpan.textContent = `${index + 1}. `;
+
+          const title = document.createElement("span");
+          title.className = "post-title";
+          title.textContent = post.title;
+          title.onclick = () => {
+            window.location.href = `/post.html?feed_id=${post.feed_id}`;
+          };
+
+          leftDiv.appendChild(indexSpan);
+          leftDiv.appendChild(title);
+
+          const rightDiv = document.createElement("div");
+          rightDiv.className = "post-meta";
+
+          const writerSpan = document.createElement("span");
+          writerSpan.className = "post-writer";
+          writerSpan.textContent = post.users?.name || "알 수 없음";
+
+          const likesInfoSpan = document.createElement("span");
+          likesInfoSpan.className = "post-likes";
+          likesInfoSpan.style.marginRight = "10px";
+          likesInfoSpan.textContent = `👍 ${post.likes || 0}`; 
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "post-enddate";
+          dateSpan.textContent = formatDate(post.endDate);
+
+          rightDiv.appendChild(likesInfoSpan);
+          rightDiv.appendChild(writerSpan);
+          rightDiv.appendChild(dateSpan);
+
+          div.appendChild(leftDiv);
+          div.appendChild(rightDiv);
+          hotListEl.appendChild(div);
+        });
+      }
+
+      renderHotPosts();
+    </script>
+  </body>
 </html>
