@@ -1,147 +1,150 @@
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: auto;
-      overflow-y: auto;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f8f8;
-    }
-    
-    body {
-      margin: 0;
-      background-color: #f8f8f8;
-    }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  overflow-y: auto;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f8f8;
+}
 
-    #header {
-      background-color: black;
-      color: white;
-    }
+body {
+  margin: 0;
+  background-color: #f8f8f8;
+}
 
-    /* Hero 영역 */
-    .hero {
-      background: url("../images/main/mainImg.jpg") no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 120px 20px;
-      height: 300px;
-      position: relative;
-    }
+#header {
+  background-color: black;
+  color: white;
+}
 
-    .hero h1 {
-      font-size: 42px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+/* Hero 영역 */
+.hero {
+  background: url("../images/main/mainImg.jpg") no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 120px 20px;
+  height: 300px;
+  position: relative;
+  transition-property: background-image; /*변경대상*/
+  transition-duration: 1s; /* 변경 되는 시간 */
+  transition-timing-function: ease-in-out; /*변경 속도 곡선 효과로 부드러움 추가*/
+}
 
-    .hero p {
-      font-size: 20px;
-    }
+.hero h1 {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-    /* 본문 레이아웃 */
-    .main-container {
-      display: flex;
-      max-width: 1200px;
-      margin: 50px auto;
-      gap: 30px;
-      padding: 0 20px;
-    }
+.hero p {
+  font-size: 20px;
+}
 
-    .left-content {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+/* 본문 레이아웃 */
+.main-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 50px auto;
+  gap: 30px;
+  padding: 0 20px;
+}
 
-    .post-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      gap: 20px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
+.left-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-    .post-card:hover {
-      transform: translateY(-3px);
-    }
+.post-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  gap: 20px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
 
-    .post-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+.post-card:hover {
+  transform: translateY(-3px);
+}
 
-    .post-card-content {
-      flex: 1;
-    }
+.post-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
-    .post-card-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+.post-card-content {
+  flex: 1;
+}
 
-    .post-card-desc {
-      font-size: 14px;
-      color: #444;
-    }
+.post-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
 
-    .right-sidebar {
-      flex: 1;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-      text-align: center;
-      border: 9px solid papayawhip;
-    }
+.post-card-desc {
+  font-size: 14px;
+  color: #444;
+}
 
-    .right-sidebar h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
+.right-sidebar {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  border: 9px solid papayawhip;
+}
 
-    .right-sidebar p {
-      font-size: 14px;
-      color: #777;
-    }
+.right-sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-    @media screen and (max-width: 768px) {
-      .main-container {
-        flex-direction: column;
-      }
+.right-sidebar p {
+  font-size: 14px;
+  color: #777;
+}
 
-      .post-card {
-        flex-direction: column;
-        text-align: center;
-      }
+@media screen and (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
 
-      .post-card img {
-        width: 80%;
-        height: auto;
-      }
-    }
-    
-    #header {
-      min-height: 45px;
-    }
+  .post-card {
+    flex-direction: column;
+    text-align: center;
+  }
 
+  .post-card img {
+    width: 80%;
+    height: auto;
+  }
+}
 
-
+#header {
+  min-height: 45px;
+}
 
 /* ===== Responsive Design (공통) ===== */
 @media (max-width: 1024px) {
-  .container, .main-container {
+  .container,
+  .main-container {
     flex-direction: column !important;
     align-items: center !important;
   }
 
-  header, nav ul {
+  header,
+  nav ul {
     flex-direction: column !important;
     text-align: center !important;
   }
@@ -150,7 +153,9 @@
     margin: 10px 0 !important;
   }
 
-  .left-content, .right-sidebar, .card {
+  .left-content,
+  .right-sidebar,
+  .card {
     width: 100% !important;
     margin-bottom: 20px !important;
   }
@@ -162,16 +167,22 @@
     padding: 10px !important;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-size: 18px !important;
   }
 
-  img, video {
+  img,
+  video {
     max-width: 100% !important;
     height: auto !important;
   }
 
-  input, textarea, select, button {
+  input,
+  textarea,
+  select,
+  button {
     width: 100% !important;
     font-size: 16px !important;
   }

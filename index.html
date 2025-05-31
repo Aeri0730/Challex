@@ -66,6 +66,28 @@
         $("#header").load("header.html", function () {
           // $(window).trigger('resize');
         });
+        let count = 0;
+        let imageList = document.querySelector(".hero");
+        let frames = [
+          "../images/main/exercise.jpg",
+          "../images/main/art.jpg",
+          "../images/main/studying.jpg",
+        ];
+
+        const preloadedImages = [];
+        for (let i = 0; i < frames.length; i++) { // 이미지 미리 로딩해서 이미지 로딩 속도 개선
+          preloadedImages[i] = new Image();
+          preloadedImages[i].src = frames[i];
+        }
+
+        if (imageList) {
+          setInterval(function () {
+            imageList.style.background = `url(${
+              frames[count % frames.length]
+            }) no-repeat center center/cover`;
+            count++;
+          }, 3000);
+        }
 
         async function displayTopHotGoals() {
           const hotGoalsListContainer = document.getElementById(
