@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/post.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
   </head>
   <body>
     <div id="header"></div>
@@ -74,6 +73,8 @@
 
           currentPost = postData;
 
+          console.log(currentPost);
+
           postTitleEl.textContent = currentPost.title;
           postContentEl.textContent = currentPost.content;
           const postDate = new Date(currentPost.created_at).toLocaleDateString(
@@ -91,12 +92,12 @@
 
           postMediaEl.innerHTML = "";
           if (currentPost.media_url && currentPost.media_type === "audio") {
-            postMediaEl.innerHTML = `<audio controls style="width: 100%"><source src="${currentPost.media_url}" type="audio/*"></audio>`;
+            postMediaEl.innerHTML = `<audio controls style="width: 100%"><source src="${currentPost.media_url}" type="video/mp4"></audio>`;
           } else if (
             currentPost.media_url &&
             currentPost.media_type === "video"
           ) {
-            postMediaEl.innerHTML = `<video controls style="width: 100%"><source src="${currentPost.media_url}" type="video/*"></video>`;
+            postMediaEl.innerHTML = `<video controls style="width: 100%"><source src="${currentPost.media_url}" type="video/mp4"></video>`;
           }
 
           const { count: initialLikeCount, error: countError } = await supabase
