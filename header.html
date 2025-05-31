@@ -1,76 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Challex Header</title>
-    <link rel="stylesheet" href="/styles/header.css" />
-  </head>
-  <body>
-    <header class="header">
-      <div class="headerLeft">
-        <a href="index.html" id="homeBtn">Challex</a>
-        <a href="/login.html" id="LoginBtn">Login</a>
-        <a href="/signup.html" id="SignupBtn">Signup</a>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Challex Header</title>
+  <link rel="stylesheet" href="/styles/header.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="headerLeft">
+      <a href="index.html" id="homeBtn">Challex</a>
+    </div>
 
-      <div class="searchBarWrapper">
-        <div class="categoryDropdown">
-          <button class="categoryButton">카테고리 ▾</button>
-          <div class="categoryMenu">
-            <a href="/topic.html">What Toppic</a>
-            <a href="/hot.html">Hot Goal</a>
-            <a href="/realized.html">Realized</a>
-          </div>
+    <div class="navItems">
+      <a href="/login.html" id="LoginBtn">Login</a>
+      <a href="/signup.html" id="SignupBtn">Signup</a>
+
+      <div class="categoryDropdown">
+        <button class="categoryButton">카테고리 ▾</button>
+        <div class="categoryMenu">
+          <a href="/topic.html">What Toppic</a>
+          <a href="/hot.html">Hot Goal</a>
+          <a href="/realized.html">Realized</a>
         </div>
-
-        <a href="/write.html" id="writeBtn">작성하기</a>
       </div>
-    </header>
-    <script type="module">
-      import { supabase } from "./js/supabaseClient.js";
-      import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
 
+      <a href="/write.html" id="writeBtn">작성하기</a>
+    </div>
+
+    <!-- 햄버거 버튼 -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+  <script type="module">
+    import { supabase } from "./js/supabaseClient.js";
+    import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (session) {
+      $("#LoginBtn")
+        .text("Logout")
+        .attr("href", "#")
+        .off("click")
+        .on("click", async function (e) {
+          e.preventDefault();
+          const { error: signOutError } = await supabase.auth.signOut();
+          if (signOutError) {
+            console.error("로그아웃 오류:", signOutError.message);
+            alert("로그아웃 중 문제가 발생했습니다.");
+          } else {
+            alert("로그아웃 되었습니다.");
+            window.location.reload();
+          }
+        });
+      $("#SignupBtn").hide();
+    } else {
+      $("#LoginBtn").text("Login").attr("href", "/login.html").off("click");
+      $("#SignupBtn").show();
+    }
+
+    $("#writeBtn").on("click", async function (e) {
       const {
         data: { session },
-        error,
       } = await supabase.auth.getSession();
-
-
-      if (session) {
-        $("#LoginBtn")
-          .text("Logout")
-          .attr("href", "#")
-          .off("click")
-          .on("click", async function (e) {
-            e.preventDefault();
-            const { error: signOutError } = await supabase.auth.signOut();
-            if (signOutError) {
-              console.error("로그아웃 오류:", signOutError.message);
-              alert("로그아웃 중 문제가 발생했습니다.");
-            } else {
-              alert("로그아웃 되었습니다.");
-              window.location.reload();
-            }
-          });
-
-        $("#SignupBtn").hide();
-      } else {
-        $("#LoginBtn").text("Login").attr("href", "/login.html").off("click"); // 로그아웃 클릭 이벤트 제거
-
-        $("#SignupBtn").show();
+      if (!session) {
+        e.preventDefault();
+        alert("글을 작성하려면 로그인이 필요합니다.");
+        window.location.href = "/login.html";
       }
+    });
 
-      $("#writeBtn").on("click", async function (e) {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (!session) {
-          e.preventDefault();
-          alert("글을 작성하려면 로그인이 필요합니다.");
-          window.location.href = "/login.html";
-        }
-      });
-    </script>
-  </body>
+    // 햄버거 메뉴 토글
+    window.toggleMenu = function () {
+      const nav = document.querySelector(".navItems");
+      nav.classList.toggle("show");
+    };
+  </script>
+</body>
 </html>
