@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .header {
@@ -10,45 +11,35 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
+  position: relative;
+  z-index: 999;
 }
 
+/* 왼쪽 로고 영역 */
 .headerLeft a {
   color: white;
   text-decoration: none;
-  margin-right: 16px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 오른쪽 메뉴들 */
+.navItems {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 일반 링크 스타일 */
+.navItems a {
+  color: white;
+  text-decoration: none;
   font-size: 14px;
   line-height: 1;
 }
 
-.searchBarWrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
-
-#search {
-  height: 30px;
-  font-size: 13px;
-  padding: 4px 12px;
-  border-radius: 16px;
-  border: none;
-}
-
-#writeBtn {
-  display: flex;
-  align-items: center;
-  height: 30px;
-  font-size: 13px;
-  padding: 4px 14px;
-  background-color: white;
-  color: black;
-  border-radius: 16px;
-  text-decoration: none;
-}
-
+/* 카테고리 드롭다운 */
 .categoryDropdown {
   position: relative;
 }
@@ -92,47 +83,65 @@ body {
   display: block;
 }
 
-
-
-/* ===== Responsive Design (공통) ===== */
-@media (max-width: 1024px) {
-  .container, .main-container {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-
-  header, nav ul {
-    flex-direction: column !important;
-    text-align: center !important;
-  }
-
-  nav ul li {
-    margin: 10px 0 !important;
-  }
-
-  .left-content, .right-sidebar, .card {
-    width: 100% !important;
-    margin-bottom: 20px !important;
-  }
+/* 작성하기 버튼 */
+#writeBtn {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 13px;
+  padding: 4px 14px;
+  background-color: white;
+  color: black;
+  border-radius: 16px;
+  text-decoration: none;
 }
 
+/* 햄버거 버튼 (초기 숨김) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 4px;
+  height: 30px;
+  width: 30px;
+}
+
+.hamburger div {
+  width: 20px;
+  height: 2px;
+  background-color: white;
+}
+
+/* 반응형 디자인 (모바일용) */
 @media (max-width: 600px) {
-  body {
-    font-size: 14px !important;
-    padding: 10px !important;
+  .navItems {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 10px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 8px;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1000;
   }
 
-  h1, h2, h3 {
-    font-size: 18px !important;
+  .navItems.show {
+    display: flex;
   }
 
-  img, video {
-    max-width: 100% !important;
-    height: auto !important;
+  .hamburger {
+    display: flex;
   }
 
-  input, textarea, select, button {
-    width: 100% !important;
-    font-size: 16px !important;
+  .header {
+    justify-content: space-between;
+  }
+
+  .headerLeft a {
+    font-size: 18px;
   }
 }
