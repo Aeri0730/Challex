@@ -1,37 +1,34 @@
+/* 기본 스타일 (웹 버전) - 이전과 거의 동일하게 유지 */
 html,
 body {
   margin: 0;
   padding: 0;
-  height: auto;
-  overflow-y: auto;
   font-family: "Segoe UI", sans-serif;
   background-color: #f8f8f8;
+  box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  background-color: #f8f8f8;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 #header {
   background-color: black;
   color: white;
+  min-height: 45px;
+  width: 100%; /* 헤더는 항상 전체 너비 */
 }
 
-/* Hero 영역 */
 .hero {
   background: url("../images/main/mainImg.jpg") no-repeat center center/cover;
-
   padding: 80px 20px;
-  width: 100%;
-  height: 100%;
+  height: 300px;
   position: relative;
-  transition-property: background-image; /*변경대상*/
-  transition-duration: 1s; /* 변경 되는 시간 */
-  transition-timing-function: ease-in-out; /*변경 속도 곡선 효과로 부드러움 추가*/
-}
-
-.frontContent {
+  transition-property: background-image;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
   color: white;
   text-align: center;
 }
@@ -46,13 +43,16 @@ body {
   font-size: 20px;
 }
 
-/* 본문 레이아웃 */
 .main-container {
   display: flex;
   max-width: 1200px;
-  margin: 50px auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
   gap: 30px;
-  padding: 0 20px;
+  padding: 0 20px; /* 데스크탑에서는 이 패딩 유지 */
+  /* width: 100%; */ /* max-width와 margin:auto 조합으로 충분하여 제거 가능 */
 }
 
 .left-content {
@@ -62,6 +62,7 @@ body {
   gap: 20px;
 }
 
+/* ... (post-card, right-sidebar 등 데스크탑 기본 스타일은 이전과 동일하게 유지) ... */
 .post-card {
   background: white;
   border-radius: 10px;
@@ -136,9 +137,35 @@ body {
   transform: scale(1.05);
 }
 
+/* ===== 모바일 화면 (예: 768px 이하)에 대한 스타일 수정 ===== */
 @media screen and (max-width: 768px) {
+  .hero {
+    padding: 60px 15px;
+    height: auto;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
   .main-container {
     flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0 15px; /* 모바일 화면 좌우 여백 */
+
+  }
+
+  .left-content,
+  .right-sidebar {
+    width: 100%; 
+
+    margin-bottom: 20px;
   }
 
   .post-card {
@@ -147,86 +174,25 @@ body {
   }
 
   .post-card img {
-    width: 80%;
+    width: 80%; 
+    max-width: 200px;
     height: auto;
   }
 }
 
-#header {
-  min-height: 45px;
-}
 
-/* ===== Responsive Design (공통) ===== */
+
 @media (max-width: 1024px) {
-  .container,
-  .main-container {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
+ .main-container {
+    flex-direction: column !important; 
+    align-items: center !important; /
 
-  header,
-  nav ul {
-    flex-direction: column !important;
-    text-align: center !important;
-  }
-
-  nav ul li {
-    margin: 10px 0 !important;
   }
 
   .left-content,
-  .right-sidebar,
-  .card {
-    width: 100% !important;
+  .right-sidebar {
+    width: 100% !important; 
     margin-bottom: 20px !important;
-  }
-}
-
-@media (max-width: 600px) {
-  body {
-    font-size: 14px !important;
-    padding: 10px !important;
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-size: 18px !important;
-  }
-
-  img,
-  video {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
-  input,
-  textarea,
-  select,
-  button {
-    width: 100% !important;
-    font-size: 16px !important;
-  }
-}
-
-@media (max-width: 600px) {
-  header {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-  }
-
-  .headerLeft {
-    display: flex !important;
-    align-items: center !important;
-  }
-
-  .mobile-menu-icon {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    margin-left: auto !important;
   }
 }
 
