@@ -1,0 +1,196 @@
+html,
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-y: hidden;
+}
+.header {
+  display: flex;
+  background-color: black;
+  justify-content: space-between;
+  align-items: center;
+}
+.headerLeft {
+  display: flex;
+  align-items: start;
+  padding: 16px;
+  gap: 16px;
+}
+.headerLeft > #homeBtn {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 30px;
+}
+#homeBtn:hover {
+  transform: scale(1.1);
+}
+.headerLeft > #LoginBtn,
+.headerLeft > #SignupBtn {
+  color: rgba(255, 255, 255, 0.777);
+  text-decoration: none;
+  justify-items: center;
+  text-align: center;
+  line-height: 30px;
+}
+.headerLeft > #LoginBtn:hover,
+.headerLeft > #SignupBtn:hover {
+  transform: scale(1.1);
+}
+#writeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px; /* 원하는 버튼 크기 */
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 16px;
+}
+#writeBtn:hover {
+  transform: scale(1.05);
+}
+.searchBarWrapper {
+  display: flex; /* Flex 추가 */
+  align-items: center; /* 수직 가운데 정렬 */
+  gap: 16px; /* 버튼과 검색창 간 간격 */
+  padding: 16px;
+}
+#search {
+  width: 150px;
+  height: 20px;
+  border-radius: 45px;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/images/main/mainImg.jpg");
+  background-size: cover;
+  background-position: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: wheat;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#startBtn {
+  background-color: black;
+  width: 150px;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 45px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 50px;
+}
+#startBtn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+.partWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 100%;
+  height: 100vh;
+  gap: 60px;
+}
+.part {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20vw;
+  height: 35vh;
+  border: 2px solid rgba(154, 154, 154, 0.436);
+  border-radius: 45px;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  row-gap: 30px;
+}
+
+.part:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+.part img {
+  width: 100px;
+  height: 100px;
+  border-radius: 45px;
+}
+.part div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.part div h2 {
+  font-size: 24px;
+  margin: 10px 0;
+  text-shadow: rgba(251, 209, 41, 0.621) 1px 0 10px;
+}
+.part div p {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.627);
+}
+
+
+/* ===== Responsive Design (공통) ===== */
+@media (max-width: 1024px) {
+  .container, .main-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  header, nav ul {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  nav ul li {
+    margin: 10px 0 !important;
+  }
+
+  .left-content, .right-sidebar, .card {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px !important;
+  }
+
+  img, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  input, textarea, select, button {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}

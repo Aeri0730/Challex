@@ -109,3 +109,48 @@ main {
   margin-left: 20px;
   margin-top: 10px;
 }
+
+
+
+/* ===== Responsive Design (공통) ===== */
+@media (max-width: 1024px) {
+  .container, .main-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  header, nav ul {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  nav ul li {
+    margin: 10px 0 !important;
+  }
+
+  .left-content, .right-sidebar, .card {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px !important;
+  }
+
+  img, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  input, textarea, select, button {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}
