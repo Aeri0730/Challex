@@ -11,53 +11,54 @@
     <div id="header"></div>
 
     <section class="hero">
-      <h1>Welcome to Challex</h1>
-      <p>당신의 한계에 도전하세요</p>
-    </section>
-
-    <div class="main-container">
-      <div class="left-content">
-        <div class="post-card" onclick="location.href='topic.html'">
-          <img src="images/main/category.png" alt="What Toppic" />
-          <div class="post-card-content">
-            <div class="post-card-title">What Toppic</div>
-            <div class="post-card-desc">모든 게시물을 확인하세요.</div>
-          </div>
-        </div>
-
-        <div class="post-card" onclick="location.href='realized.html'">
-          <img src="images/main/realized.png" alt="Realized" />
-          <div class="post-card-content">
-            <div class="post-card-title">Realized</div>
-            <div class="post-card-desc">완료한 도전들을 한눈에!</div>
-          </div>
-        </div>
+      <div class="frontContent">
+        <h1>Welcome to Challex</h1>
+        <p>당신의 한계에 도전하세요</p>
       </div>
+      <div class="main-container">
+        <div class="left-content">
+          <div class="post-card" onclick="location.href='topic.html'">
+            <img src="images/main/category.png" alt="What Toppic" />
+            <div class="post-card-content">
+              <div class="post-card-title">What Toppic</div>
+              <div class="post-card-desc">모든 게시물을 확인하세요.</div>
+            </div>
+          </div>
 
-      <div
-        class="right-sidebar"
-        onclick="location.href='hot.html'"
-        style="cursor: pointer">
-        <h2>Hot Goal</h2>
-        <p>
-          🔥 지금 가장 핫한 도전은?<br />좋아요를 많이 받은 도전을 만나보세요!
-        </p>
+          <div class="post-card" onclick="location.href='realized.html'">
+            <img src="images/main/realized.png" alt="Realized" />
+            <div class="post-card-content">
+              <div class="post-card-title">Realized</div>
+              <div class="post-card-desc">완료한 도전들을 한눈에!</div>
+            </div>
+          </div>
+        </div>
 
-        <h3>- 🔥현재 제일 핫한 게시글 TOP 3🔥 -</h3>
         <div
-          id="hotGoalsListContainer"
-          style="text-align: left; padding-left: 10px">
-          <p>로딩 중...</p>
+          class="right-sidebar"
+          onclick="location.href='hot.html'"
+          style="cursor: pointer">
+          <h2>Hot Goal</h2>
+          <p>
+            🔥 지금 가장 핫한 도전은?<br />좋아요를 많이 받은 도전을 만나보세요!
+          </p>
+
+          <h3>- 🔥현재 제일 핫한 게시글 TOP 3🔥 -</h3>
+          <div
+            id="hotGoalsListContainer"
+            style="text-align: left; padding-left: 10px">
+            <p>로딩 중...</p>
+          </div>
+          <p style="text-align: right; margin-top: 15px">
+            <a
+              href="hot.html"
+              style="font-size: 13px; color: #555; text-decoration: none"
+              >더보기...</a
+            >
+          </p>
         </div>
-        <p style="text-align: right; margin-top: 15px">
-          <a
-            href="hot.html"
-            style="font-size: 13px; color: #555; text-decoration: none"
-            >더보기...</a
-          >
-        </p>
       </div>
-    </div>
+    </section>
 
     <script type="module">
       import { supabase } from "./js/supabaseClient.js";
@@ -66,6 +67,7 @@
         $("#header").load("header.html", function () {
           // $(window).trigger('resize');
         });
+
         let count = 0;
         let imageList = document.querySelector(".hero");
         let frames = [
@@ -75,7 +77,8 @@
         ];
 
         const preloadedImages = [];
-        for (let i = 0; i < frames.length; i++) { // 이미지 미리 로딩해서 이미지 로딩 속도 개선
+        for (let i = 0; i < frames.length; i++) {
+          // 이미지 미리 로딩해서 이미지 로딩 속도 개선
           preloadedImages[i] = new Image();
           preloadedImages[i].src = frames[i];
         }

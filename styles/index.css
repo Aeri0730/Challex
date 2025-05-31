@@ -21,14 +21,19 @@ body {
 /* Hero 영역 */
 .hero {
   background: url("../images/main/mainImg.jpg") no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 120px 20px;
-  height: 300px;
+
+  padding: 80px 20px;
+  width: 100%;
+  height: 100%;
   position: relative;
   transition-property: background-image; /*변경대상*/
   transition-duration: 1s; /* 변경 되는 시간 */
   transition-timing-function: ease-in-out; /*변경 속도 곡선 효과로 부드러움 추가*/
+}
+
+.frontContent {
+  color: white;
+  text-align: center;
 }
 
 .hero h1 {
@@ -113,6 +118,22 @@ body {
 .right-sidebar p {
   font-size: 14px;
   color: #777;
+}
+#startBtn {
+  background-color: black;
+  width: 150px;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 45px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 50px;
+}
+#startBtn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
 
 @media screen and (max-width: 768px) {
