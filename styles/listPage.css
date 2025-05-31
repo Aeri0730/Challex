@@ -1,0 +1,105 @@
+body {
+  background-color: #f8f8f8;
+  font-family: sans-serif;
+  margin: 0;
+}
+main {
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.post-item {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden; /* float 포함 */
+}
+.post-item:last-child {
+  border-bottom: none;
+}
+.post-index {
+  margin-right: 5px;
+  color: #888;
+  font-weight: bold;
+}
+.post-title {
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+.post-title:hover {
+  text-decoration: underline;
+}
+.post-meta {
+  float: right;
+  font-size: 14px;
+  color: #555;
+  text-align: right;
+}
+.post-writer {
+  margin-right: 10px;
+}
+.post-enddate {
+  color: #777;
+}
+@media (max-width: 700px) {
+  main {
+    margin: 20px;
+  }
+  .post-title {
+    display: block;
+    margin-bottom: 8px;
+  }
+  .post-meta {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+
+/* ===== Responsive Design (공통) ===== */
+@media (max-width: 1024px) {
+  .container, .main-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  header, nav ul {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  nav ul li {
+    margin: 10px 0 !important;
+  }
+
+  .left-content, .right-sidebar, .card {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px !important;
+  }
+
+  img, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  input, textarea, select, button {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}

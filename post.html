@@ -1,330 +1,382 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>게시물 보기</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background-color: #f9f9f9;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>게시물 보기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/post.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    main {
-      max-width: 800px;
-      margin: 50px auto;
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+  </head>
+  <body>
+    <div id="header"></div>
 
-    .post-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .post-meta {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    #likeSection {
-      margin-bottom: 25px;
-    }
-
-    #likeBtn {
-      padding: 6px 12px;
-      font-size: 14px;
-      border: none;
-      border-radius: 5px;
-      background-color: #3b82f6;
-      color: white;
-      cursor: pointer;
-    }
-
-    #likeCount {
-      margin-left: 10px;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .post-image {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-
-    #postMedia {
-      margin-bottom: 20px;
-    }
-
-    .post-content {
-      font-size: 16px;
-      line-height: 1.7;
-      color: #333;
-      white-space: pre-wrap;
-    }
-
-    .comment-box {
-      margin-top: 40px;
-      border-top: 1px solid #ccc;
-      padding-top: 30px;
-    }
-
-    .comment-box input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .button-wrap {
-      text-align: right;
-      margin-top: 10px;
-    }
-
-    .button-wrap button,
-    .action-buttons button {
-      padding: 6px 10px;
-      margin: 2px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: #3b82f6;
-      color: white;
-    }
-
-    .action-buttons button {
-      background: #eee;
-      color: #333;
-    }
-
-    .comment {
-      margin-top: 10px;
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
-    }
-
-    .reply {
-      margin-left: 20px;
-      font-size: 14px;
-    }
-
-    .reply-box {
-      margin-left: 20px;
-      margin-top: 10px;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-</head>
-<body>
-  <div id="header"></div>
-  <main>
-    <div class="post-title" id="postTitle">제목</div>
-    <div class="post-meta" id="postDate">작성일: -</div>
-    <div id="likeSection">
-      <button id="likeBtn">👍 좋아요</button>
-      <span id="likeCount"></span>
-    </div>
-    <img id="postImage" class="post-image" src="" alt="첨부 이미지" style="display: none;" />
-    <div id="postMedia"></div>
-    <div class="post-content" id="postContent">내용</div>
-
-    <div class="comment-box">
-      <input id="commentInput" placeholder="댓글을 입력하세요">
-      <div class="button-wrap">
-        <button onclick="addComment()">댓글 게시</button>
+    <main>
+      <div class="post-title" id="postTitle">로딩 중...</div>
+      <div class="post-meta" id="postMeta"></div>
+      <div class="post-image-container">
+        <img
+          id="postImage"
+          class="post-image"
+          src=""
+          alt="첨부 이미지"
+          style="display: none" />
+        <div id="postMedia"></div>
       </div>
-      <div class="comments" id="commentList"></div>
-    </div>
-  </main>
 
-  <script>
-    $("#header").load("header.html");
+      <div class="post-content" id="postContent"></div>
 
-    const params = new URLSearchParams(window.location.search);
-    const postId = parseInt(params.get("id"));
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    const post = posts.find(p => p.id === postId);
+      <div id="likeSection">
+        <button id="likeBtn">👍 좋아요</button>
+        <span id="likeCount"></span>
+      </div>
 
-    if (post) {
-      document.getElementById("postTitle").textContent = post.title;
-      document.getElementById("postContent").textContent = post.content || post.desc;
-      document.getElementById("postDate").textContent = `작성일: ${new Date(post.id).toLocaleDateString("ko-KR")}`;
-      document.getElementById("likeCount").textContent = `좋아요 ${post.likes || 0}개`;
-
-      document.getElementById("likeBtn").addEventListener("click", function () {
-        post.likes = (post.likes || 0) + 1;
-        const postIndex = posts.findIndex(p => p.id === postId);
-        if (postIndex !== -1) {
-          posts[postIndex].likes = post.likes;
-          localStorage.setItem("posts", JSON.stringify(posts));
-          document.getElementById("likeCount").textContent = `좋아요 ${post.likes}개`;
-        }
-      });
-
-      if (post.image) {
-        const image = document.getElementById("postImage");
-        image.src = post.image;
-        image.style.display = "block";
-      }
-
-      const mediaContainer = document.getElementById("postMedia");
-      if (post.media && post.mediaType === "audio") {
-        mediaContainer.innerHTML = `
-          <audio controls style="width: 100%">
-            <source src="${post.media}" type="audio/*">
-            브라우저가 오디오를 지원하지 않습니다.
-          </audio>`;
-      } else if (post.media && post.mediaType === "video") {
-        mediaContainer.innerHTML = `
-          <video controls style="width: 100%">
-            <source src="${post.media}" type="video/*">
-            브라우저가 비디오를 지원하지 않습니다.
-          </video>`;
-      }
-    } else {
-      document.querySelector("main").innerHTML = "<p>글을 찾을 수 없습니다.</p>";
-    }
-
-    const commentKey = `comments_${postId}`;
-    let comments = JSON.parse(localStorage.getItem(commentKey) || "[]");
-
-    function saveComments() {
-      localStorage.setItem(commentKey, JSON.stringify(comments));
-    }
-
-    function renderComments() {
-      const container = document.getElementById("commentList");
-      container.innerHTML = "";
-      comments.forEach(c => container.appendChild(createCommentElement(c)));
-    }
-
-    function createCommentElement(data, isReply = false) {
-      const div = document.createElement("div");
-      div.className = isReply ? "comment reply" : "comment";
-
-      div.innerHTML = `
-        <p class="comment-text">💬 ${data.text}</p>
-        <div class="action-buttons">
-          <button onclick="likeComment(this)">👍</button>
-          <button onclick="dislikeComment(this)">👎</button>
-          <button onclick="editComment(this)">✏</button>
-          <button onclick="deleteComment(this)">🔚</button>
-          <button onclick="replyToComment(this)">↪</button>
+      <div class="comment-box">
+        <input id="commentInput" type="text" placeholder="댓글을 입력하세요" />
+        <div class="button-wrap">
+          <button onclick="addComment()">댓글 게시</button>
         </div>
-        <div class="replies"></div>
-      `;
+        <div class="comments" id="commentList"></div>
+      </div>
+    </main>
 
-      if (data.replies) {
-        const replyContainer = div.querySelector(".replies");
-        data.replies.forEach(reply => {
-          replyContainer.appendChild(createCommentElement(reply, true));
-        });
-      }
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
+      import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
 
-      div.dataset.id = data.id;
-      return div;
-    }
+      const postTitleEl = document.getElementById("postTitle");
+      const postMetaEl = document.getElementById("postMeta");
+      const postImageEl = document.getElementById("postImage");
+      const postMediaEl = document.getElementById("postMedia");
+      const postContentEl = document.getElementById("postContent");
+      const likeBtn = document.getElementById("likeBtn");
+      const likeCountEl = document.getElementById("likeCount");
+      const commentListEl = document.getElementById("commentList");
+      const commentInputEl = document.getElementById("commentInput");
 
-    function addComment(parentDiv = null) {
-      const input = parentDiv
-        ? parentDiv.querySelector(".reply-input")
-        : document.getElementById("commentInput");
+      let currentPost = null;
+      let currentUser = null;
+      let currentPostId = null;
+      let isCurrentlyLiked = false;
 
-      const text = input.value.trim();
-      if (!text) return alert("댓글을 입력하세요.");
+      $("#header").load("header.html");
 
-      const newComment = {
-        id: Date.now(),
-        text,
-        replies: []
-      };
+      async function loadPostDetails(postId) {
+        try {
+          const { data: postData, error: postError } = await supabase
+            .from("feeds")
+            .select(`*, users!writer_id ( name )`)
+            .eq("feed_id", postId)
+            .single();
 
-      if (parentDiv) {
-        const parentId = parseInt(parentDiv.dataset.id);
-        const parentComment = comments.find(c => c.id === parentId);
-        if (parentComment) {
-          parentComment.replies.push(newComment);
+          if (postError) throw postError;
+          if (!postData) throw new Error("게시물을 찾을 수 없습니다.");
+
+          currentPost = postData;
+
+          postTitleEl.textContent = currentPost.title;
+          postContentEl.textContent = currentPost.content;
+          const postDate = new Date(currentPost.created_at).toLocaleDateString(
+            "ko-KR"
+          );
+          const writerName = currentPost.users?.name || "알 수 없음";
+          postMetaEl.textContent = `작성자: ${writerName} | 작성일: ${postDate}`;
+
+          if (currentPost.image_url) {
+            postImageEl.src = currentPost.image_url;
+            postImageEl.style.display = "block";
+          } else {
+            postImageEl.style.display = "none";
+          }
+
+          postMediaEl.innerHTML = "";
+          if (currentPost.media_url && currentPost.media_type === "audio") {
+            postMediaEl.innerHTML = `<audio controls style="width: 100%"><source src="${currentPost.media_url}" type="audio/*"></audio>`;
+          } else if (
+            currentPost.media_url &&
+            currentPost.media_type === "video"
+          ) {
+            postMediaEl.innerHTML = `<video controls style="width: 100%"><source src="${currentPost.media_url}" type="video/*"></video>`;
+          }
+
+          const { count: initialLikeCount, error: countError } = await supabase
+            .from("hottopic")
+            .select("feed_id", { count: "exact", head: true })
+            .eq("feed_id", postId);
+
+          if (countError) {
+            console.error("Error fetching initial like count:", countError);
+          }
+
+          await checkIfLiked(postId);
+          updateLikeUI(initialLikeCount || 0, isCurrentlyLiked);
+
+          initializeComments();
+        } catch (error) {
+          console.error("Error loading post:", error);
+          document.querySelector("main").innerHTML = `<p>${error.message}</p>`;
         }
-        const replyBox = parentDiv.querySelector('.reply-box');
-        if (replyBox) replyBox.remove();
-      } else {
-        comments.push(newComment);
       }
 
-      saveComments();
-      renderComments();
-      input.value = "";
-    }
+      async function checkIfLiked(postId) {
+        if (!currentUser) {
+          isCurrentlyLiked = false;
+          return;
+        }
+        const { data, error } = await supabase
+          .from("hottopic")
+          .select("*", { head: true })
+          .eq("feed_id", postId)
+          .eq("checked_id", currentUser.id)
+          .maybeSingle();
+        if (error) {
+          console.error("Error checking like status:", error);
+          isCurrentlyLiked = false;
+        } else {
+          isCurrentlyLiked = data !== null;
+        }
+      }
 
-    function editComment(button) {
-      const commentDiv = button.closest('.comment');
-      const commentId = parseInt(commentDiv.dataset.id);
-      const commentText = commentDiv.querySelector(".comment-text");
-      const currentText = commentText.textContent.replace("💬 ", "");
-      const newText = prompt("댓글 수정", currentText);
-      if (!newText) return;
+      function updateLikeUI(count, liked) {
+        likeCountEl.textContent = `${count}개`;
+        if (liked) {
+          likeBtn.textContent = "❤️ 좋아요 취소";
+          likeBtn.classList.add("liked");
+        } else {
+          likeBtn.textContent = "👍 좋아요";
+          likeBtn.classList.remove("liked");
+        }
+      }
 
-      const comment = findCommentById(commentId);
-      if (comment) {
-        comment.text = newText;
-        saveComments();
+      async function handleLike() {
+        if (!currentUser) {
+          alert("로그인이 필요합니다.");
+          return;
+        }
+        if (!currentPostId) return;
+        likeBtn.disabled = true;
+        const { data, error } = await supabase.rpc("toggle_like", {
+          post_id_to_toggle: currentPostId,
+        });
+        if (error) {
+          console.error("Error toggling like:", error);
+          alert("좋아요 처리 중 오류가 발생했습니다.");
+        } else if (data && data.length > 0) {
+          const { new_like_count, liked_status } = data[0];
+          isCurrentlyLiked = liked_status;
+          updateLikeUI(new_like_count, isCurrentlyLiked);
+        }
+        likeBtn.disabled = false;
+      }
+
+      let comments = [];
+      let commentKey = "";
+
+      function initializeComments() {
+        if (!currentPostId) return;
+        commentKey = `comments_${currentPostId}`;
+        comments = JSON.parse(localStorage.getItem(commentKey) || "[]");
         renderComments();
       }
-    }
 
-    function deleteComment(button) {
-      const commentDiv = button.closest('.comment');
-      const commentId = parseInt(commentDiv.dataset.id);
-      if (!confirm("삭제하시겠습니까?")) return;
-
-      comments = comments.filter(c => c.id !== commentId);
-      saveComments();
-      renderComments();
-    }
-
-    function replyToComment(button) {
-      const commentDiv = button.closest('.comment');
-      if (commentDiv.querySelector('.reply-box')) return;
-
-      const replyBox = document.createElement("div");
-      replyBox.className = "reply-box";
-      replyBox.innerHTML = `
-        <input class="reply-input" placeholder="답글을 입력하세요">
-        <div class="button-wrap">
-          <button onclick="addComment(this.parentElement.parentElement.parentElement)">대댓글 게시</button>
-        </div>
-      `;
-      commentDiv.appendChild(replyBox);
-    }
-
-    function likeComment(button) {
-      alert("좋아요!");
-    }
-
-    function dislikeComment(button) {
-      alert("싫어요!");
-    }
-
-    function findCommentById(id, list = comments) {
-      for (const c of list) {
-        if (c.id === id) return c;
-        const found = findCommentById(id, c.replies || []);
-        if (found) return found;
+      function saveComments() {
+        if (!commentKey) return;
+        localStorage.setItem(commentKey, JSON.stringify(comments));
       }
-      return null;
-    }
 
-    renderComments();
-  </script>
-</body>
+      function renderComments() {
+        if (!commentKey || !commentListEl) return;
+        commentListEl.innerHTML = "";
+        comments.forEach((c) =>
+          commentListEl.appendChild(createCommentElement(c))
+        );
+      }
+
+      function createCommentElement(data, isReply = false) {
+        const div = document.createElement("div");
+        div.className = isReply ? "comment reply" : "comment";
+        div.dataset.id = data.id;
+
+        div.innerHTML = `
+              <p class="comment-text">💬 ${data.text}</p>
+              <div class="action-buttons">
+                  <button onclick="likeComment(this)">👍</button>
+                  <button onclick="dislikeComment(this)">👎</button>
+                  <button onclick="editComment(this)">✏</button>
+                  <button onclick="deleteComment(this)">🔚</button>
+                  <button onclick="replyToComment(this)">↪</button>
+              </div>
+              <div class="replies"></div>
+          `;
+
+        if (data.replies && data.replies.length > 0) {
+          const replyContainer = div.querySelector(".replies");
+          data.replies.forEach((reply) => {
+            replyContainer.appendChild(createCommentElement(reply, true));
+          });
+        }
+        return div;
+      }
+
+      window.addComment = function (parentDivOrButton = null) {
+        let inputEl;
+        let isMainComment = true;
+        let parentCommentData = null;
+        let parentCommentDiv = null;
+
+        if (parentDivOrButton && parentDivOrButton.closest) {
+          parentCommentDiv = parentDivOrButton.closest(".comment");
+          if (parentCommentDiv) {
+            inputEl = parentCommentDiv.querySelector(".reply-input");
+            const parentId = parseInt(parentCommentDiv.dataset.id);
+            parentCommentData = findCommentById(parentId);
+            isMainComment = false;
+          } else {
+            inputEl = document.getElementById("commentInput");
+          }
+        } else {
+          inputEl = document.getElementById("commentInput");
+        }
+
+        if (!inputEl) {
+          console.error("Input element not found");
+          return;
+        }
+
+        const text = inputEl.value.trim();
+        if (!text) return alert("댓글을 입력하세요.");
+
+        const newComment = {
+          id: Date.now(),
+          text: text,
+          replies: [],
+        };
+
+        if (!isMainComment && parentCommentData) {
+          if (!parentCommentData.replies) parentCommentData.replies = [];
+          parentCommentData.replies.push(newComment);
+        } else {
+          comments.push(newComment);
+        }
+
+        saveComments();
+        renderComments();
+        inputEl.value = "";
+
+        if (!isMainComment && parentCommentDiv) {
+          const replyBox = parentCommentDiv.querySelector(".reply-box");
+          if (replyBox) replyBox.remove();
+        }
+      };
+
+      window.editComment = function (button) {
+        const commentDiv = button.closest(".comment");
+        const commentId = parseInt(commentDiv.dataset.id);
+        const commentTextP = commentDiv.querySelector(".comment-text");
+        const currentText = commentTextP.textContent.replace("💬 ", "");
+
+        const newText = prompt("댓글 수정:", currentText);
+        if (newText === null || newText.trim() === "") return;
+
+        function updateCommentText(commentArray) {
+          for (let i = 0; i < commentArray.length; i++) {
+            if (commentArray[i].id === commentId) {
+              commentArray[i].text = newText.trim();
+              return true;
+            }
+            if (commentArray[i].replies && commentArray[i].replies.length > 0) {
+              if (updateCommentText(commentArray[i].replies)) return true;
+            }
+          }
+          return false;
+        }
+
+        if (updateCommentText(comments)) {
+          saveComments();
+          renderComments();
+        }
+      };
+
+      window.deleteComment = function (button) {
+        const commentDiv = button.closest(".comment");
+        const commentId = parseInt(commentDiv.dataset.id);
+
+        if (!confirm("정말 삭제하시겠습니까?")) return;
+
+        function removeComment(commentArray, idToRemove) {
+          for (let i = 0; i < commentArray.length; i++) {
+            if (commentArray[i].id === idToRemove) {
+              commentArray.splice(i, 1);
+              return true;
+            }
+            if (commentArray[i].replies && commentArray[i].replies.length > 0) {
+              if (removeComment(commentArray[i].replies, idToRemove))
+                return true;
+            }
+          }
+          return false;
+        }
+
+        if (removeComment(comments, commentId)) {
+          saveComments();
+          renderComments();
+        }
+      };
+
+      window.replyToComment = function (button) {
+        const commentDiv = button.closest(".comment");
+        if (commentDiv.querySelector(".reply-box")) return;
+
+        const replyBox = document.createElement("div");
+        replyBox.className = "reply-box";
+        replyBox.innerHTML = `
+              <input type="text" class="reply-input" placeholder="답글을 입력하세요">
+              <div class="button-wrap">
+                  <button onclick="addComment(this)">대댓글 게시</button>
+              </div>
+          `;
+        const repliesDiv = commentDiv.querySelector(".replies");
+        commentDiv.insertBefore(replyBox, repliesDiv);
+        replyBox.querySelector(".reply-input").focus();
+      };
+
+      window.likeComment = function (button) {
+        alert("댓글 좋아요! (localStorage 기반)");
+      };
+      window.dislikeComment = function (button) {
+        alert("댓글 싫어요! (localStorage 기반)");
+      };
+
+      function findCommentById(id, commentList = comments) {
+        for (const comment of commentList) {
+          if (comment.id === id) return comment;
+          if (comment.replies && comment.replies.length > 0) {
+            const foundInReply = findCommentById(id, comment.replies);
+            if (foundInReply) return foundInReply;
+          }
+        }
+        return null;
+      }
+
+      async function init() {
+        const params = new URLSearchParams(window.location.search);
+        currentPostId = params.get("feed_id");
+
+        if (!currentPostId) {
+          document.querySelector("main").innerHTML =
+            "<p>게시물 ID를 찾을 수 없습니다.</p>";
+          return;
+        }
+
+        const { data: userResponse } = await supabase.auth.getUser();
+        currentUser = userResponse.user;
+
+        await loadPostDetails(currentPostId);
+
+        likeBtn.addEventListener("click", handleLike);
+      }
+
+      init();
+    </script>
+  </body>
 </html>

@@ -1,0 +1,139 @@
+body {
+  background-color: #d0d0d0;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+main {
+  max-width: 600px;
+  margin: 80px auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.file-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#endDate {
+  height: 35px;
+  width: 200px;
+  margin-bottom: 20px;
+  border-color: rgb(186, 185, 185);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.submitWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+@media (max-width: 700px) {
+  main {
+    margin: 40px 20px;
+  }
+  .file-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+}
+#category {
+  height: 37px;
+  width: 200px;
+  margin-bottom: 20px;
+  border-color: rgb(186, 185, 185);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.dateWrapper {
+  display: flex;
+  text-align: center;
+  gap: 10px;
+}
+.categoryWrapper {
+  display: flex;
+  text-align: center;
+  gap: 10px;
+}
+
+
+/* ===== Responsive Design (공통) ===== */
+@media (max-width: 1024px) {
+  .container, .main-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  header, nav ul {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  nav ul li {
+    margin: 10px 0 !important;
+  }
+
+  .left-content, .right-sidebar, .card {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px !important;
+  }
+
+  img, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  input, textarea, select, button {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}

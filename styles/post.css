@@ -1,0 +1,155 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background-color: #f9f9f9;
+}
+
+main {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.post-title {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.post-meta {
+  color: gray;
+  margin-bottom: 20px;
+}
+.post-image-container {
+  display: flex;
+  gap: 10px;
+}
+.post-image {
+  max-width: 48%;
+  margin-bottom: 10px;
+}
+#postMedia {
+  width: 52%;
+}
+
+.post-content {
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+#likeSection {
+  margin-bottom: 25px;
+}
+
+#likeBtn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+#likeCount {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
+.comment-box {
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+  padding-top: 30px;
+}
+
+.comment-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.button-wrap {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.button-wrap button,
+.action-buttons button {
+  padding: 6px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+}
+
+.action-buttons button {
+  background: #eee;
+  color: #333;
+}
+
+.comment {
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.reply {
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+.reply-box {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+
+/* ===== Responsive Design (공통) ===== */
+@media (max-width: 1024px) {
+  .container, .main-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  header, nav ul {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  nav ul li {
+    margin: 10px 0 !important;
+  }
+
+  .left-content, .right-sidebar, .card {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px !important;
+  }
+
+  img, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  input, textarea, select, button {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+}

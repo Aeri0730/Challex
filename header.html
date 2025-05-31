@@ -1,125 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Challex Header</title>
-  <link rel="stylesheet" href="/styles/main.css" />
-  <style>
-    body {
-      margin: 0;
-    }
-
-    .header {
-      background-color: black;
-      color: white;
-      height: 55px; /* ✅ 정확한 헤더 높이 설정 */
-      padding: 0 30px; /* ✅ index.html 기준과 동일하게 */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 14px; /* ✅ 전체 텍스트 크기 균일화 */
-    }
-
-    .headerLeft a {
-      color: white;
-      text-decoration: none;
-      margin-right: 16px;
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    .searchBarWrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-
-    #search {
-      height: 30px;
-      font-size: 13px;
-      padding: 4px 12px;
-      border-radius: 16px;
-      border: none;
-    }
-
-    #writeBtn {
-      height: 30px;
-      font-size: 13px;
-      padding: 4px 14px;
-      background-color: white;
-      color: black;
-      border-radius: 16px;
-      text-decoration: none;
-    }
-
-    .categoryDropdown {
-      position: relative;
-    }
-
-    .categoryButton {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 13px;
-      padding: 4px 10px;
-      height: 30px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .categoryMenu {
-      display: none;
-      position: absolute;
-      top: 34px;
-      left: 0;
-      background-color: #1e1e1e;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      border-radius: 6px;
-      z-index: 1000;
-      min-width: 140px;
-    }
-
-    .categoryMenu a {
-      display: block;
-      padding: 10px 16px;
-      color: white;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .categoryMenu a:hover {
-      background-color: #333;
-    }
-
-    .categoryDropdown:hover .categoryMenu {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <header class="header">
-    <div class="headerLeft">
-      <a href="index.html" id="homeBtn">Challex</a>
-      <a href="/login.html" id="LoginBtn">Login</a>
-      <a href="/signup.html" id="SignupBtn">Signup</a>
-    </div>
-
-    <div class="searchBarWrapper">
-      <div class="categoryDropdown">
-        <button class="categoryButton">카테고리 ▾</button>
-        <div class="categoryMenu">
-          <a href="/topic.html">What Toppic</a>
-          <a href="/hot.html">Hot Goal</a>
-          <a href="/realized.html">Realized</a>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challex Header</title>
+    <link rel="stylesheet" href="/styles/header.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="headerLeft">
+        <a href="index.html" id="homeBtn">Challex</a>
+        <a href="/login.html" id="LoginBtn">Login</a>
+        <a href="/signup.html" id="SignupBtn">Signup</a>
       </div>
 
-      <a href="/write.html" id="writeBtn">작성하기</a>
-      
-    </div>
-  </header>
-</body>
+      <div class="searchBarWrapper">
+        <div class="categoryDropdown">
+          <button class="categoryButton">카테고리 ▾</button>
+          <div class="categoryMenu">
+            <a href="/topic.html">What Toppic</a>
+            <a href="/hot.html">Hot Goal</a>
+            <a href="/realized.html">Realized</a>
+          </div>
+        </div>
+
+        <a href="/write.html" id="writeBtn">작성하기</a>
+      </div>
+    </header>
+    <script type="module">
+      import { supabase } from "./js/supabaseClient.js";
+      import $ from "https://cdn.jsdelivr.net/npm/jquery@3.6.0/+esm";
+
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+
+      if (session) {
+        $("#LoginBtn")
+          .text("Logout")
+          .attr("href", "#")
+          .off("click")
+          .on("click", async function (e) {
+            e.preventDefault();
+            const { error: signOutError } = await supabase.auth.signOut();
+            if (signOutError) {
+              console.error("로그아웃 오류:", signOutError.message);
+              alert("로그아웃 중 문제가 발생했습니다.");
+            } else {
+              alert("로그아웃 되었습니다.");
+              window.location.reload();
+            }
+          });
+
+        $("#SignupBtn").hide();
+      } else {
+        $("#LoginBtn").text("Login").attr("href", "/login.html").off("click"); // 로그아웃 클릭 이벤트 제거
+
+        $("#SignupBtn").show();
+      }
+
+      $("#writeBtn").on("click", async function (e) {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session) {
+          e.preventDefault();
+          alert("글을 작성하려면 로그인이 필요합니다.");
+          window.location.href = "/login.html";
+        }
+      });
+    </script>
+  </body>
 </html>
