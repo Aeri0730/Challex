@@ -111,6 +111,7 @@ main {
 }
 
 
+
 /* ===== Responsive Design (공통) ===== */
 @media (max-width: 1024px) {
   .container, .main-container {
