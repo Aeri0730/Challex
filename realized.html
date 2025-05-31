@@ -11,7 +11,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       $(function () {
-        $("#header").load("header.html");
+        $("#header").load("header.html", function (response, status, xhr) {
+          if (status == "error") {
+            console.error("Header loading failed:", xhr.status, xhr.statusText);
+          }
+        });
       });
     </script>
 
@@ -23,7 +27,7 @@
     <script type="module">
       import { supabase } from "./js/supabaseClient.js";
 
-      const postList = document.getElementById("postList");
+      const postList = document.getElementById("realizedList");
 
       async function loadFeeds() {
         const { data, error } = await supabase
