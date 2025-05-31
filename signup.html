@@ -49,7 +49,7 @@
         border: 1px solid #ccc;
         border-radius: 8px;
         font-size: 14px;
-        width: 210px; 
+        width: 210px;
       }
 
       .form-group.id-group {
@@ -130,7 +130,7 @@
         .querySelector(".submit-button")
         .addEventListener("click", async () => {
           const name = document.getElementById("name").value.trim();
-          const email = document.getElementById("email").value.trim(); 
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value.trim();
 
           if (!name || !email || !password) {
@@ -151,6 +151,10 @@
           if (error) {
             alert("회원가입 실패: " + error.message);
           } else {
+            const { error: signOutError } = await supabase.auth.signOut();
+            if (signOutError) {
+              console.error("Error signing out after signup:", signOutError);
+            }
             alert("회원가입 성공! 확인 이메일을 확인해주세요.");
             location.href = "/login.html";
           }
